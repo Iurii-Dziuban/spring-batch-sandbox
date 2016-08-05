@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:batch="http://www.springframework.org/schema/batch"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+       xmlns="http://www.springframework.org/schema/beans"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-3.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+		http://www.springframework.org/schema/jdbc
+        http://www.springframework.org/schema/jdbc/spring-jdbc-3.2.xsd
+        http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd">
+
+    <!-- Use one of the 3 variations to scan for the Mapper. All are working. This should be in the beginning of the file -->
+
+    <!-- <mybatis:scan base-package="org.spring.batch.infrastructure.integration.mybatis.annotations" /> -->
+
+    <!-- <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="org.spring.batch.infrastructure.integration.mybatis" />
+    </bean> -->
+
+    <bean id="transactionMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="org.spring.batch.infrastructure.integration.mybatis.annotations.TransactionAnnotationDao" />
+        <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+    </bean>
+
+    <!-- Step will need a transaction manager -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager" scope="step">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="dataSource"
+          class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+        <property name="driverClassName"><value>org.h2.Driver</value></property>
+        <property name="url"><value>jdbc:h2:./db/mybatisDb</value></property>
+        <property name="username"><value>sa</value></property>
+        <property name="password"><value></value></property>
+        <property name="maxIdle"><value>1</value></property>
+    </bean>
+
+    <!-- JobRepository and JobLauncher are configuration/setup classes -->
+    <bean id="jobRepository" class="org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean"/>
+
+    <bean id="jobLauncher" class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
+        <property name="jobRepository" ref="jobRepository"/>
+    </bean>
+
+
+    <batch:job id="transactionJob">
+        <batch:step id="transactionStep">
+            <batch:description>Step #1</batch:description>
+            <batch:tasklet transaction-manager="transactionManager" >
+                <batch:chunk commit-interval="500">
+                    <batch:reader>
+                        <ref bean="transactionsMyBatisReader" />
+                    </batch:reader>
+                    <batch:writer>
+                        <ref bean="transactionsMyBatisWriter" />
+                    </batch:writer>
+                    <batch:processor>
+                        <bean id="compositeItemProcessor"
+                              class="org.springframework.batch.item.support.CompositeItemProcessor">
+                            <property name="delegates">
+                                <list>
+                                    <bean class="org.spring.batch.infrastructure.processors.LoggingIdentityProcessor" scope="step"/>
+                                </list>
+                            </property>
+                        </bean>
+                    </batch:processor>
+                    <batch:skip-policy>
+                        <bean class="org.springframework.batch.core.step.skip.AlwaysSkipItemSkipPolicy" scope="step"/>
+                    </batch:skip-policy>
+                    <batch:retry-policy>
+                        <bean class="org.springframework.retry.policy.NeverRetryPolicy" scope="step"/>
+                    </batch:retry-policy>
+                </batch:chunk>
+            </batch:tasklet>
+            <batch:next on="FAILED" to="transactionStep"/>
+            <batch:end on="COMPLETED"/>
+            <batch:listeners>
+                <batch:listener>
+                    <bean class="org.spring.batch.infrastructure.listeners.StepListener">
+                    </bean>
+                </batch:listener>
+
+                <!-- won't be triggered because it is not a step listener-->
+                <batch:listener>
+                    <bean class="org.spring.batch.infrastructure.listeners.JobListener">
+                    </bean>
+                </batch:listener>
+            </batch:listeners>
+        </batch:step>
+
+        <batch:listeners>
+            <!-- job listeners are here -->
+            <batch:listener>
+                <bean class="org.spring.batch.infrastructure.listeners.JobListener">
+                </bean>
+            </batch:listener>
+        </batch:listeners>
+
+        <batch:validator>
+            <bean class="org.spring.batch.infrastructure.validators.ParametersValidator"/>
+        </batch:validator>
+    </batch:job>
+
+    <!-- create tables automatically on start up-->
+    <jdbc:initialize-database data-source="dataSource" ignore-failures="DROPS">
+        <jdbc:script location="org/spring/batch/db-scripts/schema-drop-db.sql" />
+        <jdbc:script location="org/spring/batch/db-scripts/schema-create-db.sql" />
+        <jdbc:script location="org/spring/batch/db-scripts/schema-populate-db.sql" />
+    </jdbc:initialize-database>
+
+    <!-- Mybatis configuration. Short name of the queryId is enough -->
+    <bean id="transactionsMyBatisReader"
+          class="org.mybatis.spring.batch.MyBatisPagingItemReader"
+          p:sqlSessionFactory-ref="sqlSessionFactory"
+          p:queryId="findAll"
+          p:pageSize="200"
+          scope="step"/>
+
+    <!-- Short name of the query is enough -->
+    <bean id="transactionsMyBatisWriter" class="org.mybatis.spring.batch.MyBatisBatchItemWriter">
+        <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+        <property name="statementId" value="insertTransaction" />
+    </bean>
+
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+
+    </bean>
+
+</beans>

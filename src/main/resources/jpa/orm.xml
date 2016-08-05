@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm
+http://java.sun.com/xml/ns/persistence/orm_1_0.xsd"
+                 version="1.0">
+    <description>My First JPA XML Application</description>
+    <package>org.spring.batch.infrastructure.model</package>
+    <entity class="org.spring.batch.infrastructure.model.Transaction" name="Transaction">
+        <table name="transactions"/>
+        <attributes>
+            <id name="id">
+                <generated-value strategy="AUTO"/>
+            </id>
+            <basic name="name">
+                <column name="name" length="100"/>
+            </basic>
+        </attributes>
+    </entity>
+</entity-mappings>
