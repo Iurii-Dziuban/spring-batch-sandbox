@@ -19,26 +19,16 @@ public class SpringBatchMybatisExample {
 
     private static final Log LOGGER = LogFactory.getLog(SpringBatchMybatisExample.class);
 
-    public static void main( String[] args )
-    {
+    public static void main( String[] args ) throws Exception {
+
         ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext(new String[]{"classpath:mybatis/application-context.xml"});
 
         JobLauncher jobLauncher = applicationContext.getBean(JobLauncher.class);
 
         Job transactionJob = applicationContext.getBean("transactionJob", Job.class);
 
-        try {
-            JobExecution jobExecution = jobLauncher.run(transactionJob, new JobParameters());
-            LOGGER.info("Exit status = " + jobExecution.getExitStatus());
-        } catch (JobExecutionAlreadyRunningException e) {
-            e.printStackTrace();
-        } catch (JobRestartException e) {
-            e.printStackTrace();
-        } catch (JobInstanceAlreadyCompleteException e) {
-            e.printStackTrace();
-        } catch (JobParametersInvalidException e) {
-            e.printStackTrace();
-        }
+        JobExecution jobExecution = jobLauncher.run(transactionJob, new JobParameters());
+        LOGGER.info("Exit status = " + jobExecution.getExitStatus());
     }
 
 }
