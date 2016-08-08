@@ -1,5 +1,7 @@
 package org.spring.batch.infrastructure.listeners;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.spring.batch.infrastructure.model.Transaction;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.StepExecution;
@@ -15,72 +17,74 @@ import java.util.List;
  */
 public class StepFullListener extends StepListenerSupport<Transaction, Transaction> {
 
+    private static final Log LOGGER = LogFactory.getLog(StepFullListener.class);
+
     public ExitStatus afterStep(StepExecution stepExecution) {
-        System.out.println("AfterStep event of StepFullListener");
+        LOGGER.info("AfterStep event of StepFullListener");
         return null;
     }
 
     public void beforeStep(StepExecution stepExecution) {
-        System.out.println("BeforeStep event of StepFullListener");
+        LOGGER.info("BeforeStep event of StepFullListener");
     }
 
     public void afterChunk(ChunkContext context) {
-        System.out.println("AfterChunk event of StepFullListener");
+        LOGGER.info("AfterChunk event of StepFullListener");
     }
 
     public void beforeChunk(ChunkContext context) {
-        System.out.println("BeforeChunk event of StepFullListener");
+        LOGGER.info("BeforeChunk event of StepFullListener");
     }
 
     public void afterRead(Transaction item) {
-        System.out.println("AfterRead event of StepFullListener");
+        LOGGER.info("AfterRead event of StepFullListener");
     }
 
     public void beforeRead() {
-        System.out.println("BeforeRead event of StepFullListener");
+        LOGGER.info("BeforeRead event of StepFullListener");
     }
 
     public void onReadError(Exception ex) {
-        System.out.println("OnReadError event of StepFullListener");
+        LOGGER.info("OnReadError event of StepFullListener");
     }
 
     public void afterWrite(List<? extends Transaction> items) {
-        System.out.println("AfterWrite event of StepFullListener");
+        LOGGER.info("AfterWrite event of StepFullListener");
     }
 
     public void beforeWrite(List<? extends Transaction> items) {
-        System.out.println("BeforeWrite event of StepFullListener");
+        LOGGER.info("BeforeWrite event of StepFullListener");
     }
 
     public void onWriteError(Exception exception, List<? extends Transaction> items) {
-        System.out.println("OnWriteError event of StepFullListener");
+        LOGGER.info("OnWriteError event of StepFullListener");
     }
 
     public void afterProcess(Transaction item, Transaction result) {
-        System.out.println("AfterProcess event of StepFullListener");
+        LOGGER.info("AfterProcess event of StepFullListener");
     }
 
     public void beforeProcess(Transaction item) {
-        System.out.println("BeforeProcess event of StepFullListener");
+        LOGGER.info("BeforeProcess event of StepFullListener");
     }
 
     public void onProcessError(Transaction item, Exception e) {
-        System.out.println("OnProcessError event of StepFullListener");
+        LOGGER.info("OnProcessError event of StepFullListener");
     }
 
     public void onSkipInProcess(Transaction item, Throwable t) {
-        System.out.println("OnSkipInProcess event of StepFullListener");
+        LOGGER.info("OnSkipInProcess event of StepFullListener");
     }
 
     public void onSkipInRead(Throwable t) {
-        System.out.println("OnSkipInRead event of StepFullListener");
+        LOGGER.info("OnSkipInRead event of StepFullListener");
     }
 
     public void onSkipInWrite(Transaction item, Throwable t) {
-        System.out.println("OnSkipInWrite event of StepFullListener");
+        LOGGER.info("OnSkipInWrite event of StepFullListener");
     }
 
     public void afterChunkError(ChunkContext context) {
-        System.out.println("AfterChunkError event of StepFullListener");
+        LOGGER.info("AfterChunkError event of StepFullListener");
     }
 }

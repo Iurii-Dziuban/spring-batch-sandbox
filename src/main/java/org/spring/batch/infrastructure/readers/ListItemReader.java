@@ -1,5 +1,7 @@
 package org.spring.batch.infrastructure.readers;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.spring.batch.infrastructure.model.Transaction;
 import org.springframework.batch.item.*;
 
@@ -7,6 +9,8 @@ import org.springframework.batch.item.*;
  * Created by iurii.dziuban on 18.07.2016.
  */
 public class ListItemReader implements ItemStreamReader<Transaction> {
+
+    private static final Log LOGGER = LogFactory.getLog(ListItemReader.class);
 
     private int numberOfTransactionsToRead = 2;
 
@@ -17,23 +21,23 @@ public class ListItemReader implements ItemStreamReader<Transaction> {
         }
         Transaction transaction = new Transaction();
         transaction.setId(numberOfTransactionsToRead);
-        transaction.setName("ListItemReader invoked");
+        transaction.setName("ListItemReader item");
         numberOfTransactionsToRead--;
         return transaction;
     }
 
     @Override
     public void open(ExecutionContext executionContext) throws ItemStreamException {
-        System.out.println("ItemStreamReader open connection invoked");
+        LOGGER.info("ItemStreamReader open connection invoked");
     }
 
     @Override
     public void update(ExecutionContext executionContext) throws ItemStreamException {
-        System.out.println("ItemStreamReader update invoked to persist state");
+        LOGGER.info("ItemStreamReader update invoked to persist state");
     }
 
     @Override
     public void close() throws ItemStreamException {
-        System.out.println("ItemStreamReader close connection invoked");
+        LOGGER.info("ItemStreamReader close connection invoked");
     }
 }

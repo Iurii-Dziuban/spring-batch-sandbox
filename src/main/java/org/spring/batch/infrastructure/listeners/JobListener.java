@@ -1,5 +1,8 @@
 package org.spring.batch.infrastructure.listeners;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.spring.batch.infrastructure.processors.LoggingIdentityProcessor;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.listener.JobExecutionListenerSupport;
 
@@ -10,13 +13,15 @@ import org.springframework.batch.core.listener.JobExecutionListenerSupport;
  */
 public class JobListener extends JobExecutionListenerSupport {
 
+    private static final Log LOGGER = LogFactory.getLog(JobListener.class);
+
     @Override
     public void beforeJob(JobExecution jobExecution) {
-        System.out.println("BeforeJob");
+        LOGGER.info("BeforeJob");
     }
 
     @Override
     public void afterJob(JobExecution jobExecution) {
-        System.out.println("AfterJob");
+        LOGGER.info("AfterJob");
     }
 }

@@ -1,5 +1,7 @@
 package org.spring.batch.infrastructure.writers;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.spring.batch.infrastructure.model.Transaction;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemStreamException;
@@ -14,6 +16,7 @@ import java.util.List;
  */
 public class ThrowingExceptionItemWriter implements ItemStreamWriter<Transaction> {
 
+    private static final Log LOGGER = LogFactory.getLog(ThrowingExceptionItemWriter.class);
     private boolean throwException = true;
 
     @Override
@@ -22,22 +25,22 @@ public class ThrowingExceptionItemWriter implements ItemStreamWriter<Transaction
             throwException = false;
             throw new IllegalArgumentException();
         }
-        System.out.println(items);
+        LOGGER.info(items);
     }
 
     @Override
     public void open(ExecutionContext executionContext) throws ItemStreamException {
-        System.out.println("ItemStreamWriter open connection invoked");
+        LOGGER.info("ItemStreamWriter open connection invoked");
     }
 
     @Override
     public void update(ExecutionContext executionContext) throws ItemStreamException {
-        System.out.println("ItemStreamWriter update invoked to persist state");
+        LOGGER.info("ItemStreamWriter update invoked to persist state");
     }
 
     @Override
     public void close() throws ItemStreamException {
-        System.out.println("ItemStreamWriter close connection invoked");
+        LOGGER.info("ItemStreamWriter close connection invoked");
     }
 }
 

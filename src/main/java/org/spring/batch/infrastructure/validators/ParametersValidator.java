@@ -1,5 +1,7 @@
 package org.spring.batch.infrastructure.validators;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersInvalidException;
 import org.springframework.batch.core.JobParametersValidator;
@@ -12,7 +14,9 @@ import java.util.Map;
  */
 public class ParametersValidator implements JobParametersValidator {
 
+    private static final Log LOGGER = LogFactory.getLog(ParametersValidator.class);
+
     public void validate(JobParameters jobParameters) throws JobParametersInvalidException {
-        System.out.println("parameters validator started");
+        LOGGER.info("parameters validator started");
     }
 }

@@ -1,5 +1,7 @@
 package main.hibernate;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParameters;
@@ -19,6 +21,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public class SpringBatchHibernateExample {
 
+    private static final Log LOGGER = LogFactory.getLog(SpringBatchHibernateExample.class);
+
     public static void main( String[] args )
     {
         ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext(new String[]{"classpath:hibernate/application-context.xml"});
@@ -29,7 +33,7 @@ public class SpringBatchHibernateExample {
 
         try {
             JobExecution jobExecution = jobLauncher.run(transactionJob, new JobParameters());
-            System.out.println("Exit status = " + jobExecution.getExitStatus());
+            LOGGER.info("Exit status = " + jobExecution.getExitStatus());
         } catch (JobExecutionAlreadyRunningException e) {
             e.printStackTrace();
         } catch (JobRestartException e) {

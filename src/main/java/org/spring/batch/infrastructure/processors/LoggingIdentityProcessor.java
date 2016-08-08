@@ -1,5 +1,7 @@
 package org.spring.batch.infrastructure.processors;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.spring.batch.infrastructure.model.Transaction;
 import org.springframework.batch.item.ItemProcessor;
 
@@ -8,9 +10,11 @@ import org.springframework.batch.item.ItemProcessor;
  */
 public class LoggingIdentityProcessor implements ItemProcessor<Transaction, Transaction> {
 
+    private static final Log LOGGER = LogFactory.getLog(LoggingIdentityProcessor.class);
+
     @Override
     public Transaction process(Transaction transaction) throws Exception {
-        System.out.println("LoggingIdentityProcessor for transaction invoked");
+        LOGGER.info("LoggingIdentityProcessor for transaction invoked");
         return transaction;
     }
 }

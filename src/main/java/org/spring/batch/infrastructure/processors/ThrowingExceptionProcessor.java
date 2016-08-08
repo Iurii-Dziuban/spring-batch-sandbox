@@ -1,5 +1,7 @@
 package org.spring.batch.infrastructure.processors;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.spring.batch.infrastructure.model.Transaction;
 import org.springframework.batch.item.ItemProcessor;
 
@@ -8,15 +10,16 @@ import org.springframework.batch.item.ItemProcessor;
  */
 public class ThrowingExceptionProcessor implements ItemProcessor<Transaction, Transaction> {
 
+    private static final Log LOGGER = LogFactory.getLog(ThrowingExceptionProcessor.class);
     private boolean throwException = true;
 
     @Override
     public Transaction process(Transaction transaction) throws Exception {
         if (throwException) {
             throwException = false;
-            throw new IllegalArgumentException();
+            LOGGER.error("ThrowingExceptionProcessor throws Exception", new IllegalArgumentException());
         }
-        System.out.println("ThrowingExceptionProcessor for transaction invoked");
+        LOGGER.info("ThrowingExceptionProcessor for transaction invoked");
         return transaction;
     }
 }
