@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:batch="http://www.springframework.org/schema/batch"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+       xmlns="http://www.springframework.org/schema/beans"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xsi:schemaLocation="http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-3.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+		http://www.springframework.org/schema/jdbc
+        http://www.springframework.org/schema/jdbc/spring-jdbc-3.2.xsd">
+
+    <!-- Step will need a transaction manager -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager" scope="step">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="dataSource"
+          class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+        <property name="driverClassName"><value>org.h2.Driver</value></property>
+        <property name="url"><value>jdbc:h2:./db/springBatchDb</value></property>
+        <property name="username"><value>sa</value></property>
+        <property name="password"><value></value></property>
+        <property name="maxIdle"><value>1</value></property>
+    </bean>
+
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <constructor-arg index="0" ref="dataSource"/>
+    </bean>
+
+
+    <bean id="jobListener" class="org.spring.batch.infrastructure.listeners.JobListener">
+    </bean>
+
+    <!-- JobRepository and JobLauncher are configuration/setup classes -->
+    <bean id="jobRepository" class="org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean"/>
+
+    <bean id="jobLauncher" class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
+        <property name="jobRepository" ref="jobRepository"/>
+    </bean>
+
+    <batch:job id="transactionJob">
+        <batch:split id="split1" task-executor="taskExecutor">
+            <batch:flow>
+                <batch:step id="transactionStep">
+                    <batch:description>Step #1</batch:description>
+                    <batch:tasklet transaction-manager="transactionManager">
+                        <!-- Play with commit interval 1,2,500 . See different number of invocations ItemStream update invokations -->
+                        <batch:chunk commit-interval="500">
+                            <batch:reader>
+                                <bean class="org.spring.batch.infrastructure.readers.ConcurrentItemReader" scope="step"/>
+                            </batch:reader>
+                            <batch:writer>
+                                <bean class="org.spring.batch.infrastructure.writers.ConcurrentItemWriter">
+                                </bean>
+                            </batch:writer>
+                            <!-- uncomment to use one simple batch processor without composition -->
+                            <batch:processor>
+                                <bean class="org.spring.batch.infrastructure.processors.LoggingIdentityProcessor" scope="step">
+                                </bean>
+                            </batch:processor>
+                            <batch:skip-policy>
+                                <bean class="org.springframework.batch.core.step.skip.NeverSkipItemSkipPolicy" scope="step"/>
+                            </batch:skip-policy>
+                            <batch:retry-policy>
+                                <bean class="org.springframework.retry.policy.NeverRetryPolicy" scope="step"/>
+                            </batch:retry-policy>
+                        </batch:chunk>
+                    </batch:tasklet>
+                    <batch:end on="COMPLETED"/>
+                    <batch:listeners>
+                        <batch:listener>
+                            <bean class="org.spring.batch.infrastructure.listeners.StepListener">
+                            </bean>
+                        </batch:listener>
+                        <batch:listener>
+                            <bean class="org.spring.batch.infrastructure.listeners.JobListener">
+                            </bean>
+                        </batch:listener>
+                    </batch:listeners>
+                </batch:step>
+            </batch:flow>
+            <batch:flow>
+                <batch:step id="transactionStep2">
+                    <batch:description>Step #1</batch:description>
+                    <batch:tasklet transaction-manager="transactionManager">
+                        <!-- Play with commit interval 1,2,500 . See different number of invocations ItemStream update invokations -->
+                        <batch:chunk commit-interval="500">
+                            <batch:reader>
+                                <bean class="org.spring.batch.infrastructure.readers.ConcurrentItemReader" scope="step"/>
+                            </batch:reader>
+                            <batch:writer>
+                                <bean class="org.spring.batch.infrastructure.writers.ConcurrentItemWriter">
+                                </bean>
+                            </batch:writer>
+                            <!-- uncomment to use one simple batch processor without composition -->
+                            <batch:processor>
+                                <bean class="org.spring.batch.infrastructure.processors.LoggingIdentityProcessor" scope="step">
+                                </bean>
+                            </batch:processor>
+                            <batch:skip-policy>
+                                <bean class="org.springframework.batch.core.step.skip.NeverSkipItemSkipPolicy" scope="step"/>
+                            </batch:skip-policy>
+                            <batch:retry-policy>
+                                <bean class="org.springframework.retry.policy.NeverRetryPolicy" scope="step"/>
+                            </batch:retry-policy>
+                        </batch:chunk>
+                    </batch:tasklet>
+                    <batch:end on="COMPLETED"/>
+                    <batch:listeners>
+                        <batch:listener>
+                            <bean class="org.spring.batch.infrastructure.listeners.StepListener">
+                            </bean>
+                        </batch:listener>
+                        <batch:listener>
+                            <bean class="org.spring.batch.infrastructure.listeners.JobListener">
+                            </bean>
+                        </batch:listener>
+                    </batch:listeners>
+                </batch:step>
+            </batch:flow>
+        </batch:split>
+
+
+        <batch:listeners>
+            <batch:listener>
+                <bean class="org.spring.batch.infrastructure.listeners.JobListener">
+                </bean>
+            </batch:listener>
+        </batch:listeners>
+
+        <batch:validator>
+            <bean class="org.spring.batch.infrastructure.validators.ParametersValidator"/>
+        </batch:validator>
+    </batch:job>
+
+
+    <bean id="transactionReader" class="org.springframework.batch.item.database.JdbcCursorItemReader" scope="step">
+        <property name="fetchSize" value="500"/>
+        <property name="dataSource" ref="dataSource"/>
+        <property name="saveState" value="false" />
+        <property name="sql" value="
+            SELECT id,
+                   name
+            FROM transactions
+        "/>
+        <property name="rowMapper">
+            <bean class="org.springframework.jdbc.core.BeanPropertyRowMapper">
+                <property name="checkFullyPopulated" value="true"/>
+                <property name="mappedClass" value="org.spring.batch.infrastructure.model.Transaction"/>
+            </bean>
+        </property>
+    </bean>
+
+    <util:list id="transactions" value-type="org.spring.batch.infrastructure.model.Transaction"/>
+
+    <!-- create job-meta tables automatically -->
+    <jdbc:initialize-database data-source="dataSource" ignore-failures="DROPS">
+        <jdbc:script location="org/spring/batch/db-scripts/schema-drop-db.sql" />
+        <jdbc:script location="org/spring/batch/db-scripts/schema-create-db.sql" />
+        <jdbc:script location="org/spring/batch/db-scripts/schema-populate-db.sql" />
+    </jdbc:initialize-database>
+
+    <bean id="taskExecutor" class="org.springframework.core.task.SimpleAsyncTaskExecutor" />
+
+</beans>
