@@ -16,6 +16,7 @@ Main features examples are under src/main/java folder. It is simply classes with
 - `in_memory` with in memory simple reader/writers capabilities and integration
 - `jpa` with JPA reader/writers capabilities and integration
 - `mybatis` with Mybatis reader/writers capabilities and integration
+- `concurrent` with concurrent and parallel features
 
 # Pom.xml
 Libraries: spring-batch-core, spring-batch-infrastructure, spring retry, spring jdbc for db population, commons-dbcp2 for database connection pool, h2 file based database for ease of db usage, log4j logging (possibility to configure) via slf4j.
@@ -23,4 +24,5 @@ Integration with jpa, hibernate, mybatis.
 
 # Logging
 Spring batch logging logic.
-- Log4j is used
+- Commons logging is used.
+- Commons logging is configured to use Log4j under the hood.
