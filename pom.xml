@@ -204,7 +204,6 @@
                             <version>2.2.1</version>
                             <!-- optional, default is a new dir in java.io.tmpdir -->
                             <databaseDirectory>db/mongotest</databaseDirectory>
-                            <databaseName>mongoDB</databaseName>
                             <!-- optional (file|console|none), default console -->
                             <logging>console</logging>
                             <!-- optional, can be used when logging=file, default is ./embedmongo.log -->
@@ -218,7 +217,7 @@
                             <!--optional, one of wiredTiger or mmapv1 (default is mmapv1) -->
                             <storageEngine>wiredTiger</storageEngine>
                             <!-- optional, skips this plugin entirely, use on the command line like -Dembedmongo.skip -->
-                            <skip>false</skip>
+                            <!--<skip>true</skip> -->
                         </configuration>
                     </execution>
                     <execution>

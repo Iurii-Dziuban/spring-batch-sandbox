@@ -2,7 +2,6 @@ package org.spring.batch.infrastructure.listeners;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.spring.batch.infrastructure.processors.LoggingIdentityProcessor;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.listener.JobExecutionListenerSupport;
 

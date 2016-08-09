@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-
 <!-- mybatis mapper configuration -->
 <mapper namespace="org.spring.batch.infrastructure.integration.mybatis.xml.TransactionDao">
     <resultMap id="transactionResult" type="org.spring.batch.infrastructure.model.Transaction">

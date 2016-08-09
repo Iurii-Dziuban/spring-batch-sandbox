@@ -15,7 +15,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {
-        "classpath:mongo/job-context.xml",
+        "classpath:mongo/application-context.xml",
         "classpath:mongo/test-context.xml",
         "classpath:mongo/application-context.xml"})
 

@@ -6,9 +6,7 @@ import org.spring.batch.infrastructure.model.Transaction;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemStreamException;
 import org.springframework.batch.item.ItemStreamWriter;
-import org.springframework.util.Assert;
 
-import java.util.IllegalFormatException;
 import java.util.List;
 
 /**

@@ -31,7 +31,7 @@ import java.util.Date;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {
-        "classpath:mongo/job-context.xml",
+        "classpath:mongo/application-context.xml",
         "classpath:mongo/test-context.xml",
         "classpath:mongo/application-context.xml"})
 /** Example from https://github.com/flapdoodle-oss/de.flapdoodle.embed.mongo  */
