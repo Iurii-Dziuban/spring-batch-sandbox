@@ -1,6 +1,7 @@
 target
 spring-batch-sandbox.iml
 db
+csv
 .idea
 .idea/
 db/
