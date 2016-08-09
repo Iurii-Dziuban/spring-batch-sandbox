@@ -1,0 +1,16 @@
+package main.scheduler;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+/**
+ * Created by dziubani on 4/11/2016.
+ */
+
+public class SpringBatchSchedulerExample {
+
+    public static void main( String[] args ) throws Exception {
+        new ClassPathXmlApplicationContext(new String[]{"classpath:scheduler/application-context.xml"});
+    }
+}
