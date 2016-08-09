@@ -1,0 +1,27 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- this bean should auto load -->
+    <bean class="org.springframework.batch.test.JobLauncherTestUtils"/>
+
+
+    <!-- https://github.com/jirutka/embedmongo-spring -->
+    <bean id="mongo" class="cz.jirutka.spring.embedmongo.EmbeddedMongoFactoryBean">
+        <property name="version" value="2.4.5" />
+        <property name="bindIp" value="127.0.0.1" />
+        <property name="port" value="12345" />
+    </bean>
+
+    <!-- @Bean(destroyMethod="close")
+    public Mongo mongo() throws IOException {
+    return new EmbeddedMongoBuilder()
+            .version("2.4.5")
+            .bindIp("127.0.0.1")
+            .port(12345)
+            .build();
+    }  -->
+
+</beans>
