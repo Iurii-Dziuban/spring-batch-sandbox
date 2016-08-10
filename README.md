@@ -11,7 +11,6 @@ Maven project that consists of the following parts:
 `mvn clean package -DskipTests` to build
 `mvn clean compile -Dembedmongo.wait -Dembedmongo.skip=false` to run mongodb locally
 
-
 # Spring batch main features demo
 Main features examples are under src/main/java folder. It is simply classes with main methods, that explain the feature and ready to be executed and provide log that shows the results.
 - `concurrent` for concurrent features
@@ -29,10 +28,11 @@ Main features examples are under src/main/java folder. It is simply classes with
 #  Spring batch tests
 Tests are under `src/test/java`
 - `mongo` test with embedded and external modes
+- `java_config` test with spring batch java config and invocation of job
 
 # Pom.xml
 Libraries: spring-batch-core, spring-batch-infrastructure, spring retry, spring jdbc for db population, commons-dbcp2 for database connection pool, h2 file based database for ease of db usage, log4j logging (possibility to configure) via slf4j.
-Integration with jpa, hibernate, mybatis.
+Integration with jpa, hibernate, mybatis, mongo, schedulers: cron and quartz
 
 # Logging
 Spring batch logging logic.
