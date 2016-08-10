@@ -47,7 +47,6 @@
                             <property name="delegates">
                                 <list>
                                     <bean class="org.spring.batch.infrastructure.writers.ListItemWriter" scope="step">
-                                        <constructor-arg ref="transactions"/>
                                     </bean>
                                 </list>
                             </property>
@@ -97,7 +96,5 @@
             <bean class="org.spring.batch.infrastructure.validators.ParametersValidator"/>
         </batch:validator>
     </batch:job>
-
-    <util:list id="transactions" value-type="org.spring.batch.infrastructure.model.Transaction"/>
 
 </beans>

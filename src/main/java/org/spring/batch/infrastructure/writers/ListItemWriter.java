@@ -14,17 +14,12 @@ public class ListItemWriter<T> implements ItemStreamWriter<T> {
 
     private static final Log LOGGER = LogFactory.getLog(ListItemWriter.class);
 
-    private final List<T> items;
-
-    public ListItemWriter(List<T> items) {
-        Assert.notNull(items);
-        this.items = items;
+    public ListItemWriter() {
     }
 
     @Override
     public void write(List<? extends T> items) throws Exception {
         LOGGER.info(items);
-        this.items.addAll(items);
     }
 
     @Override

@@ -48,7 +48,6 @@
                     </batch:reader>
                     <batch:writer>
                         <bean class="org.spring.batch.infrastructure.writers.ListItemWriter">
-                            <constructor-arg ref="transactions"/>
                         </bean>
                     </batch:writer>
 
@@ -117,8 +116,6 @@
             </bean>
         </property>
     </bean>
-
-    <util:list id="transactions" value-type="org.spring.batch.infrastructure.model.Transaction"/>
 
     <!-- create job-meta tables automatically -->
     <jdbc:initialize-database data-source="dataSource" ignore-failures="DROPS">

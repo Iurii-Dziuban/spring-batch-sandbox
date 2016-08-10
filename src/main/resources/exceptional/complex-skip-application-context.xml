@@ -97,7 +97,6 @@
                     </batch:reader>
                     <batch:writer>
                         <bean class="org.spring.batch.infrastructure.writers.ListItemWriter">
-                            <constructor-arg name="items" value="transactions" />
                         </bean>
                     </batch:writer>
                 </batch:chunk>
@@ -116,7 +115,5 @@
             <bean class="org.spring.batch.infrastructure.validators.ParametersValidator"/>
         </batch:validator>
     </batch:job>
-
-    <util:list id="transactions" value-type="org.spring.batch.infrastructure.model.Transaction"/>
 
 </beans>

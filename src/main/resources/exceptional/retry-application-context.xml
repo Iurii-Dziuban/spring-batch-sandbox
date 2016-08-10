@@ -46,7 +46,6 @@
                             <property name="delegates">
                                 <list>
                                     <bean class="org.spring.batch.infrastructure.writers.ListItemWriter" scope="step">
-                                        <constructor-arg name="items" value="transactions" />
                                     </bean>
                                 </list>
                             </property>
@@ -92,7 +91,6 @@
                     </batch:reader>
                     <batch:writer>
                         <bean class="org.spring.batch.infrastructure.writers.ListItemWriter">
-                            <constructor-arg name="items" value="transactions" />
                         </bean>
                     </batch:writer>
                 </batch:chunk>
