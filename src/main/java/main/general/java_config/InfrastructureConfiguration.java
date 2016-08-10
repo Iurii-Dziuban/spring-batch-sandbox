@@ -1,7 +1,5 @@
 package main.general.java_config;
 
-import org.springframework.context.annotation.Bean;
-
 import javax.sql.DataSource;
 
 /**
