@@ -63,6 +63,19 @@
             <version>4.0.5.RELEASE</version>
         </dependency>
 
+        <!-- Declarative retry -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aop</artifactId>
+            <version>4.0.5.RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>1.8.9</version>
+        </dependency>
+
         <!-- Datasource connections pool used in all db related samples-->
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -237,6 +250,7 @@
                 <configuration>
                     <excludes>
                         <exclude>mongo/**.class</exclude>
+                        <exclude>system_command/**.class</exclude>
                     </excludes>
                 </configuration>
             </plugin>

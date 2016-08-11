@@ -14,15 +14,15 @@ public class RetryEventListener extends RetryListenerSupport {
     private static final Log LOGGER = LogFactory.getLog(RetryEventListener.class);
 
     public <T, E extends Throwable> void close(RetryContext context, RetryCallback<T, E> callback, Throwable throwable) {
-        LOGGER.info("Retry close");
+        LOGGER.info("RetryEventListener close");
     }
 
     public <T, E extends Throwable> void onError(RetryContext context, RetryCallback<T, E> callback, Throwable throwable) {
-        LOGGER.info("Retry onError");
+        LOGGER.info("RetryEventListener onError");
     }
 
     public <T, E extends Throwable> boolean open(RetryContext context, RetryCallback<T, E> callback) {
-        LOGGER.info("Retry open");
+        LOGGER.info("RetryEventListener open");
         return true;
     }
 }
