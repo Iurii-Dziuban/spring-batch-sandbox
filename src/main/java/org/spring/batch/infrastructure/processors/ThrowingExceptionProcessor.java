@@ -18,6 +18,7 @@ public class ThrowingExceptionProcessor implements ItemProcessor<Transaction, Tr
         if (throwException) {
             throwException = false;
             LOGGER.error("ThrowingExceptionProcessor throws Exception", new IllegalArgumentException());
+            throw new IllegalArgumentException();
         }
         LOGGER.info("ThrowingExceptionProcessor for transaction invoked");
         return transaction;
