@@ -14,9 +14,6 @@ public class ListItemWriter<T> implements ItemStreamWriter<T> {
 
     private static final Log LOGGER = LogFactory.getLog(ListItemWriter.class);
 
-    public ListItemWriter() {
-    }
-
     @Override
     public void write(List<? extends T> items) throws Exception {
         LOGGER.info(items);
