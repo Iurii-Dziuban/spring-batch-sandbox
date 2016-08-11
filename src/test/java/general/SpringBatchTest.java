@@ -1,4 +1,5 @@
-package mongo;
+package general;
+
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -10,25 +11,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-/**
- * Created by iurii.dziuban on 08.08.2016.
- */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {
-        "classpath:mongo/application-context.xml",
-        "classpath:mongo/test-context.xml"})
-/**
- * NOTE: Mongo Db should be running
- */
-public class SpringBatchMongoTest {
+        "classpath:general/test-context.xml"})
+public class SpringBatchTest {
 
     @Autowired
     private JobLauncherTestUtils jobLauncherTestUtils;
 
     @Test
     public void launchJob() throws Exception {
-        JobExecution jobExecution = jobLauncherTestUtils.launchStep("step1");
+        JobExecution jobExecution = jobLauncherTestUtils.launchJob();
 
         Assert.assertEquals(BatchStatus.COMPLETED, jobExecution.getStatus());
     }
+
+    @Test
+    public void launchStep() throws Exception {
+        JobExecution stepJobExecution = jobLauncherTestUtils.launchStep("transactionStep");
+
+        Assert.assertEquals(BatchStatus.COMPLETED, stepJobExecution.getStatus());
+    }
+
 }

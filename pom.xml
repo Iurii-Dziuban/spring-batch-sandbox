@@ -127,19 +127,20 @@
 
         <!-- NOTE! Spring Batch Hibernate readers writers are not compatible with Hibernate 5 only with Hibernate 4 -->
 
+        <!-- TODO uncomment for hibernate and jpa examples -->
         <!-- Hibernate -->
-        <dependency>
+        <!-- <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
             <version>4.3.11.Final</version>
-        </dependency>
+        </dependency> -->
 
         <!-- JPA Hibernate integration -->
-        <dependency>
+        <!-- <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
             <version>4.3.11.Final</version>
-        </dependency>
+        </dependency> -->
 
         <!-- Junit -->
         <dependency>
