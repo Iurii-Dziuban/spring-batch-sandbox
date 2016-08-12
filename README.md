@@ -29,6 +29,8 @@ Main features examples are under src/main/java folder. It is simply classes with
 Tests are under `src/test/java`
 - `mongo` test with embedded and external modes
 - `java_config` test with spring batch java config and invocation of job
+- `system_commad` test with spring batch command tasklet to run command line command
+- `param_passing` test of passing parameters inside one step and between steps
 
 # Pom.xml
 Libraries: spring-batch-core, spring-batch-infrastructure, spring retry, spring jdbc for db population, commons-dbcp2 for database connection pool, h2 file based database for ease of db usage, log4j logging (possibility to configure) via slf4j.
