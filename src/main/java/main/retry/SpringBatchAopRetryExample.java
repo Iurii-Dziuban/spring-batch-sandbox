@@ -1,4 +1,4 @@
-package org.spring.batch.infrastructure.retry;
+package main.retry;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

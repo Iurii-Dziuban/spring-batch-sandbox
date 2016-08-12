@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns:batch="http://www.springframework.org/schema/batch"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns="http://www.springframework.org/schema/beans"
        xmlns:jdbc="http://www.springframework.org/schema/jdbc"
        xsi:schemaLocation="http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
 		http://www.springframework.org/schema/jdbc
         http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
 
@@ -41,7 +40,9 @@
         <batch:step id="transactionStep">
             <batch:description>Step #1</batch:description>
             <batch:tasklet transaction-manager="transactionManager" task-executor="taskExecutor">
+                <!-- chunk-completion-policy="completionPolicy"  or  commit-interval="500" -->
                 <!-- Play with commit interval 1,2,500 . See different number of invocations ItemStream update invokations -->
+
                 <batch:chunk commit-interval="500">
                     <batch:reader>
                         <ref bean="transactionReader" />
@@ -100,6 +101,8 @@
         </batch:validator>
     </batch:job>
 
+    <bean id="completionPolicy" class="org.spring.batch.infrastructure.completion_policy.CustomCompletionPolicy">
+    </bean>
 
     <bean id="transactionReader" class="org.springframework.batch.item.database.JdbcCursorItemReader" scope="step">
         <property name="fetchSize" value="500"/>

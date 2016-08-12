@@ -12,6 +12,8 @@
         http://www.springframework.org/schema/aop
         http://www.springframework.org/schema/aop/spring-aop.xsd">
 
+    <!-- TODO implement statefull -->
+
     <bean id="dataSource"
           class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
         <property name="driverClassName"><value>org.h2.Driver</value></property>
@@ -92,7 +94,8 @@
                      advice-ref="retryAdvice" order="-1" />
     </aop:config>
 
-    <bean id="retryTemplate" class="org.springframework.retry.support.RetryTemplate">
+    <!-- <bean id="retryTemplate" class="org.springframework.retry.support.RetryTemplate"> -->
+    <bean id="retryTemplate" class="org.springframework.batch.core.step.item.BatchRetryTemplate">
         <property name="retryPolicy">
             <bean class="org.springframework.retry.policy.SimpleRetryPolicy">
                 <constructor-arg name="maxAttempts" value="5" />
@@ -118,12 +121,22 @@
                 <bean class="org.spring.batch.infrastructure.listeners.RetryEventListener" />
             </array>
         </property>
+        <property name="retryContextCache">
+            <bean class="org.springframework.retry.policy.MapRetryContextCache">
+            </bean>
+        </property>
     </bean>
 
-    <bean id="retryAdvice" class="org.springframework.retry.interceptor.RetryOperationsInterceptor">
+    <bean id="retryAdvice" class="org.springframework.retry.interceptor.StatefulRetryOperationsInterceptor">
        <property name="retryOperations" ref="retryTemplate" />
         <property name="recoverer">
             <bean class="org.spring.batch.infrastructure.retry.recoverer.TransactionRecoverer" />
+        </property>
+        <property name="newItemIdentifier">
+            <bean class="org.spring.batch.infrastructure.retry.stateful.TransactionNewMethodArgumentsIdentifier" />
+        </property>
+        <property name="keyGenerator">
+            <bean class="org.spring.batch.infrastructure.retry.stateful.TransactionMethodArgumentsKeyGenerator" />
         </property>
     </bean>
 
