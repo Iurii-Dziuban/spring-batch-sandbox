@@ -37,13 +37,13 @@
     <bean id="jobListener" class="org.spring.batch.infrastructure.listeners.JobListener">
     </bean>
 
-    <batch:job id="transactionJob">
+    <batch:job id="transactionJob" restartable="true">
         <batch:step id="transactionStep">
             <batch:description>Step #1</batch:description>
             <batch:tasklet>
                 <batch:chunk commit-interval="500">
                     <batch:reader>
-                        <bean class="org.spring.batch.infrastructure.readers.ListItemReader">
+                        <bean class="org.spring.batch.infrastructure.readers.ListItemReader" scope="step">
                         </bean>
                     </batch:reader>
                     <batch:writer>
@@ -58,11 +58,12 @@
                     </batch:writer>
 
                     <batch:processor>
-                        <bean class="org.spring.batch.infrastructure.processors.ThrowingExceptionProcessor" scope="step"/>
+                        <bean class="org.spring.batch.infrastructure.processors.ThrowingExceptionProcessor"/>
                     </batch:processor>
                 </batch:chunk>
             </batch:tasklet>
             <batch:end on="COMPLETED"/>
+            <batch:next on="FAILED" to="transactionStep" />
             <batch:listeners>
                 <batch:listener>
                     <bean class="org.spring.batch.infrastructure.listeners.StepFullListener">
@@ -94,15 +95,22 @@
                      advice-ref="retryAdvice" order="-1" />
     </aop:config>
 
-    <!-- <bean id="retryTemplate" class="org.springframework.retry.support.RetryTemplate"> -->
     <bean id="retryTemplate" class="org.springframework.batch.core.step.item.BatchRetryTemplate">
+        <property name="listeners">
+            <array>
+                <bean class="org.spring.batch.infrastructure.listeners.RetryEventListener" />
+            </array>
+        </property>
+        <property name="retryContextCache">
+            <bean class="org.springframework.retry.policy.MapRetryContextCache">
+            </bean>
+        </property>
         <property name="retryPolicy">
             <bean class="org.springframework.retry.policy.SimpleRetryPolicy">
-                <constructor-arg name="maxAttempts" value="5" />
+                <constructor-arg name="maxAttempts" value="2" />
                 <constructor-arg name="retryableExceptions">
                     <util:map>
-                        <!-- NOTE: comment entry to see recoverer in action -->
-                        <entry key="java.lang.IllegalArgumentException" value="true"/>
+                       <entry key="java.lang.IllegalArgumentException" value="true"/>
                     </util:map>
                 </constructor-arg>
             </bean>
@@ -116,18 +124,9 @@
                 </property>
             </bean>
         </property>
-        <property name="listeners">
-            <array>
-                <bean class="org.spring.batch.infrastructure.listeners.RetryEventListener" />
-            </array>
-        </property>
-        <property name="retryContextCache">
-            <bean class="org.springframework.retry.policy.MapRetryContextCache">
-            </bean>
-        </property>
     </bean>
 
-    <bean id="retryAdvice" class="org.springframework.retry.interceptor.StatefulRetryOperationsInterceptor">
+    <bean id="retryAdvice" name="retryAdvice" class="org.springframework.retry.interceptor.StatefulRetryOperationsInterceptor">
        <property name="retryOperations" ref="retryTemplate" />
         <property name="recoverer">
             <bean class="org.spring.batch.infrastructure.retry.recoverer.TransactionRecoverer" />

@@ -15,12 +15,7 @@ public class TransactionNewMethodArgumentsIdentifier implements NewMethodArgumen
 
     @Override
     public boolean isNew(Object[] args) {
-        LOGGER.info("TransactionNewMethodArgumentsIdentifier is invoked");
-        for (Object item : args) {
-            if (item instanceof Transaction) {
-                return true;
-            }
-        }
+        // Default return value have to be false
         return false;
     }
 }
