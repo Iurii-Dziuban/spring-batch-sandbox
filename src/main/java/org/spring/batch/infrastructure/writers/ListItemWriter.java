@@ -16,7 +16,7 @@ public class ListItemWriter<T> implements ItemStreamWriter<T> {
 
     @Override
     public void write(List<? extends T> items) throws Exception {
-        LOGGER.info(items);
+        LOGGER.info("Items are " + items);
     }
 
     @Override

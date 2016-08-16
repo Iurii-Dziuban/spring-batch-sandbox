@@ -22,6 +22,7 @@ public class ListItemReader implements ItemStreamReader<Transaction> {
         Transaction transaction = new Transaction();
         transaction.setId(numberOfTransactionsToRead);
         transaction.setName("ListItemReader item");
+        LOGGER.info("Transaction is read " + transaction);
         numberOfTransactionsToRead--;
         return transaction;
     }
