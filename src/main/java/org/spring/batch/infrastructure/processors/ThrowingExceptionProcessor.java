@@ -11,16 +11,15 @@ import org.springframework.batch.item.ItemProcessor;
 public class ThrowingExceptionProcessor implements ItemProcessor<Transaction, Transaction> {
 
     private static final Log LOGGER = LogFactory.getLog(ThrowingExceptionProcessor.class);
-    private boolean throwException = true;
+    private int numberOfTimesToThrowException = 1;
 
     @Override
     public Transaction process(Transaction transaction) throws Exception {
-        if (throwException) {
-            throwException = false;
+        if (numberOfTimesToThrowException-- > 0) {
             LOGGER.error("ThrowingExceptionProcessor throws Exception", new IllegalArgumentException());
             throw new IllegalArgumentException();
         }
-        LOGGER.info("ThrowingExceptionProcessor for transaction invoked");
+        LOGGER.info("ThrowingExceptionProcessor for transaction invoked " + transaction);
         return transaction;
     }
 }
