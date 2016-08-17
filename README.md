@@ -25,6 +25,7 @@ Main features examples are under src/main/java folder. It is simply classes with
 - `partitioner` with partitioner functionality feature
 - `scheduler` with scheduling features based on cron and quartz
 - `retry` with two samples with stateless and stateful retry
+- `jsr352` with jsr job description example
 
 #  Spring batch tests
 Tests are under `src/test/java`

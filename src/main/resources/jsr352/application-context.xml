@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xsi:schemaLocation="http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/jdbc
+        http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+        http://xmlns.jcp.org/xml/ns/javaee
+        http://xmlns.jcp.org/xml/ns/javaee/jobXML_1_0.xsd">
+
+<!-- Step will need a transaction manager -->
+<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+    <property name="dataSource" ref="dataSource"/>
+</bean>
+
+<bean id="dataSource"
+      class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+    <property name="driverClassName"><value>org.h2.Driver</value></property>
+    <property name="url"><value>jdbc:h2:./db/jsr352BatchletDb</value></property>
+    <property name="username"><value>sa</value></property>
+    <property name="password"><value></value></property>
+    <property name="maxIdle"><value>1</value></property>
+</bean>
+
+<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+    <constructor-arg index="0" ref="dataSource"/>
+</bean>
+
+<bean id="jobListener" class="org.spring.batch.infrastructure.listeners.JobListener">
+</bean>
+
+<!-- JobRepository and JobLauncher are configuration/setup classes -->
+<bean id="jobRepository" class="org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean"/>
+
+<bean id="jobExplorer" class="org.springframework.batch.core.explore.support.SimpleJobExplorer" factory-bean="jobExplorerFactory">
+</bean>
+
+<bean id="jobExplorerFactory" class="org.springframework.batch.core.explore.support.JobExplorerFactoryBean">
+    <property name="dataSource" ref="dataSource" />
+</bean>
+
+
+<bean id=" jobLauncher" class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
+    <property name="jobRepository" ref="jobRepository"/>
+</bean>
+
+<job id="jsrJob" xmlns="http://xmlns.jcp.org/xml/ns/javaee" version="1.0">
+    <step id="step1">
+        <batchlet ref="myBatchlet"/>
+    </step>
+</job>
+
+<bean id="myBatchlet" class="org.spring.batch.infrastructure.jsr_352.JsrBatchlet">
+</bean>
+
+<bean id="completionPolicy" class="org.spring.batch.infrastructure.completion_policy.CustomCompletionPolicy">
+</bean>
+
+<bean id="transactionReader" class="org.springframework.batch.item.database.JdbcCursorItemReader">
+    <property name="fetchSize" value="500"/>
+    <property name="dataSource" ref="dataSource"/>
+    <property name="sql" value="
+            SELECT id,
+                   name
+            FROM transactions
+        "/>
+    <property name="rowMapper">
+        <bean class="org.springframework.jdbc.core.BeanPropertyRowMapper">
+            <property name="checkFullyPopulated" value="true"/>
+            <property name="mappedClass" value="org.spring.batch.infrastructure.model.Transaction"/>
+        </bean>
+    </property>
+</bean>
+
+<!-- create job-meta tables automatically -->
+<jdbc:initialize-database data-source="dataSource" ignore-failures="DROPS">
+    <jdbc:script location="org/spring/batch/db-scripts/schema-drop-db.sql" />
+    <jdbc:script location="org/spring/batch/db-scripts/schema-create-db.sql" />
+    <jdbc:script location="org/spring/batch/db-scripts/schema-populate-db.sql" />
+</jdbc:initialize-database>
+
+<bean id="taskExecutor" class="org.springframework.core.task.SyncTaskExecutor" />
+
+</beans>
