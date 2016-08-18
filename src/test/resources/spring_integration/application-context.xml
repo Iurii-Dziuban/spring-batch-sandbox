@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:batch="http://www.springframework.org/schema/batch"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:int="http://www.springframework.org/schema/integration"
+       xmlns:int-file="http://www.springframework.org/schema/integration/file"
+       xmlns:int-mail="http://www.springframework.org/schema/integration/mail"
+       xmlns:int-stream="http://www.springframework.org/schema/integration/stream"
+       xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+       http://www.springframework.org/schema/integration/mail http://www.springframework.org/schema/integration/mail/spring-integration-mail.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+		http://www.springframework.org/schema/integration/file http://www.springframework.org/schema/integration/file/spring-integration-file.xsd
+		http://www.springframework.org/schema/integration/stream http://www.springframework.org/schema/integration/stream/spring-integration-stream.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd">
+
+    <bean id="dataSource"
+          class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+        <property name="driverClassName"><value>org.h2.Driver</value></property>
+        <property name="url"><value>jdbc:h2:./db/springBatchIntegrationDbPoller</value></property>
+        <property name="username"><value>sa</value></property>
+        <property name="password"><value></value></property>
+        <property name="maxIdle"><value>1</value></property>
+    </bean>
+
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <constructor-arg index="0" ref="dataSource"/>
+    </bean>
+
+    <!-- Step will need a transaction manager -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager" scope="step">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <!-- JobRepository and JobLauncher are configuration/setup classes -->
+    <bean id="jobRepository" class="org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean"/>
+
+    <bean id="jobLauncher" class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
+        <property name="jobRepository" ref="jobRepository"/>
+    </bean>
+
+    <!-- Spring batch part -->
+
+    <!-- On error sends exceptions to chunkExecutions chanel -->
+    <batch:job id="importTransactions">
+        <batch:step id="loadTransactions">
+            <batch:tasklet>
+                <batch:chunk reader="itemReader" writer="itemWriter" commit-interval="1">
+                    <batch:listeners>
+                        <batch:listener>
+                            <bean class="org.spring.batch.infrastructure.spring_integration.TransactionChunkListener"/>
+                        </batch:listener>
+                    </batch:listeners>
+                </batch:chunk>
+            </batch:tasklet>
+        </batch:step>
+        <batch:listeners>
+            <batch:listener ref="notificationExecutionsListener"/>
+        </batch:listeners>
+    </batch:job>
+
+    <!-- Writing to console -->
+    <bean id="itemWriter" class="org.spring.batch.infrastructure.writers.ListItemWriter">
+    </bean>
+
+    <!-- Reads transaction from files supplied by spring integration as parameters -->
+    <bean id="itemReader" class="org.springframework.batch.item.file.FlatFileItemReader" scope="step">
+        <property name="resource" value="file:///#{jobParameters['input.file.name']}" />
+        <property name="linesToSkip" value="1"/>
+        <property name="lineMapper">
+            <bean class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+                <property name="lineTokenizer">
+                    <bean class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer">
+                        <property name="names" value="id,name" />
+                    </bean>
+                </property>
+                <property name="fieldSetMapper">
+                    <bean class="org.spring.batch.infrastructure.spring_integration.TransactionFieldSetMapper" />
+                </property>
+            </bean>
+        </property>
+    </bean>
+
+    <!-- create job-meta tables automatically -->
+    <jdbc:initialize-database data-source="dataSource" ignore-failures="DROPS">
+        <jdbc:script location="org/spring/batch/db-scripts/schema-drop-db.sql" />
+        <jdbc:script location="org/spring/batch/db-scripts/schema-create-db.sql" />
+        <jdbc:script location="org/spring/batch/db-scripts/schema-populate-db.sql" />
+    </jdbc:initialize-database>
+
+    <!-- Spring integration part -->
+
+    <!-- Top level poller -->
+    <int:poller default="true" fixed-rate="10000"/>
+
+    <!-- stores files -->
+    <int:channel id="files"/>
+
+    <!-- stores job requests -->
+    <int:channel id="requests"/>
+
+    <!-- end chanel (holds statuses) -->
+    <int:channel id="statuses">
+        <int:queue capacity="10"/>
+    </int:channel>
+
+    <!-- job executions holder-->
+    <int:channel id="jobExecutions"/>
+
+    <!-- chanel to restart job in case an error -->
+    <int:channel id="jobRestarts" />
+
+    <!-- notify via email-->
+    <int:channel id="notifiableExecutions"/>
+
+    <!-- mail notification chanel -->
+    <int:channel id="mailNotifications"/>
+
+    <!-- Finished successful state chanel-->
+    <int:channel id="completeApplication">
+        <int:queue/>
+    </int:channel>
+
+    <!--Based on job listener, catches read files exceptions and writes to console -->
+    <int:channel id="chunkExecutions"/>
+    <int-stream:stdout-channel-adapter id="printToConsole" channel="chunkExecutions" auto-startup="true"/>
+
+    <!-- Poller to pull files into the chanel -->
+    <int-file:inbound-channel-adapter id="pollDataFile" directory="data/transactionImport" channel="files"/>
+
+    <!-- receives files from chanel and creates spring batch job requests to requests chanel-->
+    <int:transformer id="prepareJobLaunchRequest" input-channel="files" output-channel="requests">
+        <bean class="org.spring.batch.infrastructure.spring_integration.FileMessageToJobRequest">
+            <property name="job" ref="importTransactions"/>
+            <property name="fileParameterName" value="input.file.name"/>
+        </bean>
+    </int:transformer>
+
+    <!-- Retrieves requests from requests chanel and puts statuses into statuses chanel-->
+    <int:service-activator id="runJob" method="launch" input-channel="requests"
+                           output-channel="statuses">
+        <bean class="org.springframework.batch.integration.launch.JobLaunchingMessageHandler">
+            <constructor-arg ref="jobLauncher"/>
+        </bean>
+    </int:service-activator>
+
+    <!-- gateway listener that captures executions and puts into jobExecutions chanel-->
+    <int:gateway id="notificationExecutionsListener"
+                 service-interface="org.springframework.batch.core.JobExecutionListener"
+                 default-request-channel="jobExecutions"/>
+
+    <!-- Based on job executions routs to jobRestarts if error otherwise to completeApplication and notifiableExecutions -->
+    <int:router id="executionsRouter" input-channel="jobExecutions">
+        <bean class="org.spring.batch.infrastructure.spring_integration.JobExecutionRouter"/>
+    </int:router>
+
+    <!-- retries job if failed based on router-->
+    <int:chain input-channel="jobRestarts">
+        <int:delayer id="wait5sec" default-delay="5000"/>
+        <int:service-activator>
+            <bean class="org.spring.batch.infrastructure.spring_integration.JobRestart"/>
+        </int:service-activator>
+    </int:chain>
+
+    <!-- Based on router creates a message and sends to mailNotifications channel-->
+    <int:transformer id="mailBodyTransformer"
+                     input-channel="notifiableExecutions"
+                     output-channel="mailNotifications">
+        <bean class="org.spring.batch.infrastructure.spring_integration.ExecutionsToMailTransformer"/>
+    </int:transformer>
+
+    <!-- sends email messages based on mailSender functionality-->
+    <int-mail:outbound-channel-adapter id="notificationsSender"
+                                       channel="mailNotifications" mail-sender="mailSender"/>
+
+    <bean id="mailSender" class="org.spring.batch.infrastructure.spring_integration.StubJavaMailSender">
+        <constructor-arg>
+            <bean class="javax.mail.internet.MimeMessage">
+                <constructor-arg type="javax.mail.Session"><null/></constructor-arg>
+            </bean>
+        </constructor-arg>
+    </bean>
+
+</beans>
