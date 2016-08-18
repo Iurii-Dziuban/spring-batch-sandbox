@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:task="http://www.springframework.org/schema/task"
        xmlns:batch="http://www.springframework.org/schema/batch"
        xmlns:jdbc="http://www.springframework.org/schema/jdbc"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -8,6 +9,7 @@
        xmlns:int-mail="http://www.springframework.org/schema/integration/mail"
        xmlns:int-stream="http://www.springframework.org/schema/integration/stream"
        xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+       http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd
        http://www.springframework.org/schema/integration/mail http://www.springframework.org/schema/integration/mail/spring-integration-mail.xsd
 		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
 		http://www.springframework.org/schema/integration/file http://www.springframework.org/schema/integration/file/spring-integration-file.xsd
@@ -40,13 +42,17 @@
         <property name="jobRepository" ref="jobRepository"/>
     </bean>
 
+    <!-- Extra -->
+
+    <task:executor id="taskExecutor" pool-size="100"/>
+
     <!-- Spring batch part -->
 
     <!-- On error sends exceptions to chunkExecutions chanel -->
     <batch:job id="importTransactions">
         <batch:step id="loadTransactions">
-            <batch:tasklet>
-                <batch:chunk reader="itemReader" writer="itemWriter" commit-interval="1">
+            <batch:tasklet task-executor="taskExecutor"  > <!-- throttle-limit="2" -->
+                <batch:chunk reader="itemReader" processor="itemProcessorAsync" writer="asyncWriter" commit-interval="1">
                     <batch:listeners>
                         <batch:listener>
                             <bean class="org.spring.batch.infrastructure.spring_integration.TransactionChunkListener"/>
@@ -68,6 +74,7 @@
     <bean id="itemReader" class="org.springframework.batch.item.file.FlatFileItemReader" scope="step">
         <property name="resource" value="file:///#{jobParameters['input.file.name']}" />
         <property name="linesToSkip" value="1"/>
+        <property name="saveState" value="false" />
         <property name="lineMapper">
             <bean class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
                 <property name="lineTokenizer">
@@ -82,12 +89,44 @@
         </property>
     </bean>
 
+    <bean id="asyncWriter" class="org.springframework.batch.integration.async.AsyncItemWriter">
+        <property name="delegate" ref="itemWriter"/>
+    </bean>
+
+    <bean id="itemProcessorAsync" class="org.springframework.batch.integration.async.AsyncItemProcessor">
+        <property name="delegate" ref="itemProcessor"/>
+        <property name="taskExecutor" ref="taskExecutor" />
+    </bean>
+
+    <!-- Use one of two implementations -->
+    <!-- <bean id="itemProcessor" class="org.spring.batch.infrastructure.processors.LoggingIdentityProcessor">
+    </bean> -->
+
+
+
     <!-- create job-meta tables automatically -->
     <jdbc:initialize-database data-source="dataSource" ignore-failures="DROPS">
         <jdbc:script location="org/spring/batch/db-scripts/schema-drop-db.sql" />
         <jdbc:script location="org/spring/batch/db-scripts/schema-create-db.sql" />
         <jdbc:script location="org/spring/batch/db-scripts/schema-populate-db.sql" />
     </jdbc:initialize-database>
+
+
+
+    <!-- or         Spring integration alternative for itemProcessor config-->
+    <int:gateway id="itemProcessor" service-interface="org.springframework.batch.item.ItemProcessor"
+                 default-request-channel="sendItemChannel"
+                 default-reply-channel="processedItems"/>
+
+    <int:channel id="sendItemChannel"/>
+    <int:channel id="processedItems"/>
+
+    <int:chain input-channel="sendItemChannel"
+               output-channel="processedItems">
+        <int:service-activator method="process">
+            <bean class="org.spring.batch.infrastructure.processors.LoggingIdentityProcessor" />
+        </int:service-activator>
+    </int:chain>
 
     <!-- Spring integration part -->
 
@@ -107,6 +146,9 @@
 
     <!-- job executions holder-->
     <int:channel id="jobExecutions"/>
+
+    <!-- additional. to execute in chunks -->
+    <int:channel id="chunks"/>
 
     <!-- chanel to restart job in case an error -->
     <int:channel id="jobRestarts" />
@@ -138,8 +180,7 @@
     </int:transformer>
 
     <!-- Retrieves requests from requests chanel and puts statuses into statuses chanel-->
-    <int:service-activator id="runJob" method="launch" input-channel="requests"
-                           output-channel="statuses">
+    <int:service-activator id="runJob" method="launch" input-channel="requests" output-channel="statuses">
         <bean class="org.springframework.batch.integration.launch.JobLaunchingMessageHandler">
             <constructor-arg ref="jobLauncher"/>
         </bean>
@@ -181,5 +222,4 @@
             </bean>
         </constructor-arg>
     </bean>
-
 </beans>

@@ -20,6 +20,7 @@ public class JobExecutionRouter {
     public List<String> routeJobExecution(JobExecution jobExecution) {
 
         LOGGER.info("JobExecutionRouter invoked");
+        LOGGER.info(jobExecution);
 
         final List<String> routeToChannels = new ArrayList<String>();
 
