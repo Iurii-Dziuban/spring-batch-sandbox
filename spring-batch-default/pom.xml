@@ -3,10 +3,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>spring-batch</groupId>
-    <artifactId>spring-batch-sandbox</artifactId>
+    <artifactId>spring-batch-default</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>spring-batch-sandbox</name>
+    <name>spring-batch-default</name>
     <url>http://maven.apache.org</url>
 
     <properties>
