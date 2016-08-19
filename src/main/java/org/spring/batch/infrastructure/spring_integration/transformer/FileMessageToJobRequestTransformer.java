@@ -1,4 +1,4 @@
-package org.spring.batch.infrastructure.spring_integration;
+package org.spring.batch.infrastructure.spring_integration.transformer;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -13,9 +13,9 @@ import java.io.File;
 /**
  * Created by iurii.dziuban on 17.08.2016.
  */
-public class FileMessageToJobRequest {
+public class FileMessageToJobRequestTransformer {
 
-    private static final Log LOGGER = LogFactory.getLog(FileMessageToJobRequest.class);
+    private static final Log LOGGER = LogFactory.getLog(FileMessageToJobRequestTransformer.class);
 
     private Job job;
 

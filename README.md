@@ -34,6 +34,7 @@ Tests are under `src/test/java`
 - `system_command` test with spring batch command tasklet to run command line command
 - `param_passing` test of passing parameters inside one step and between steps
 - `retry` test for spring-retry annotation based functionality
+- `spring_integration` test for integration of spring batch with spring integration framework. Poller, Transformer, Router, Email sending bz Spring integration and job processing via spring batch.
 
 # Pom.xml
 Libraries: spring-batch-core, spring-batch-infrastructure, spring-retry, spring-jdbc for db population, commons-dbcp2 for database connection pool, h2 file based database for ease of db usage, log4j logging (possibility to configure) via slf4j.

@@ -1,4 +1,4 @@
-package org.spring.batch.infrastructure.spring_integration;
+package org.spring.batch.infrastructure.spring_integration.service_activator;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

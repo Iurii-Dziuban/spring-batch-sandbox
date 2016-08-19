@@ -1,8 +1,7 @@
-package org.spring.batch.infrastructure.spring_integration;
+package org.spring.batch.infrastructure.spring_integration.transformer;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.spring.batch.infrastructure.scheduler.CronScheduler;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.integration.annotation.Transformer;
 import org.springframework.integration.mail.MailHeaders;

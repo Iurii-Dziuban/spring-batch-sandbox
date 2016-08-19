@@ -42,11 +42,11 @@
         <property name="jobRepository" ref="jobRepository"/>
     </bean>
 
-    <!-- Extra -->
+    <!-- task executer for parallel processing example -->
 
     <task:executor id="taskExecutor" pool-size="100"/>
 
-    <!-- Spring batch part -->
+    <!-- SPRING BATCH CONFIGURATION -->
 
     <!-- On error sends exceptions to chunkExecutions chanel -->
     <batch:job id="importTransactions">
@@ -66,7 +66,7 @@
         </batch:listeners>
     </batch:job>
 
-    <!-- Writing to console -->
+    <!-- Simple writer to console -->
     <bean id="itemWriter" class="org.spring.batch.infrastructure.writers.ListItemWriter">
     </bean>
 
@@ -98,12 +98,6 @@
         <property name="taskExecutor" ref="taskExecutor" />
     </bean>
 
-    <!-- Use one of two implementations -->
-    <!-- <bean id="itemProcessor" class="org.spring.batch.infrastructure.processors.LoggingIdentityProcessor">
-    </bean> -->
-
-
-
     <!-- create job-meta tables automatically -->
     <jdbc:initialize-database data-source="dataSource" ignore-failures="DROPS">
         <jdbc:script location="org/spring/batch/db-scripts/schema-drop-db.sql" />
@@ -111,7 +105,9 @@
         <jdbc:script location="org/spring/batch/db-scripts/schema-populate-db.sql" />
     </jdbc:initialize-database>
 
-
+    <!-- Use one of two implementations -->
+    <!-- <bean id="itemProcessor" class="org.spring.batch.infrastructure.processors.LoggingIdentityProcessor">
+    </bean> -->
 
     <!-- or         Spring integration alternative for itemProcessor config-->
     <int:gateway id="itemProcessor" service-interface="org.springframework.batch.item.ItemProcessor"
@@ -128,27 +124,24 @@
         </int:service-activator>
     </int:chain>
 
-    <!-- Spring integration part -->
+    <!-- SPRING INTEGRATION CONFIGURATION -->
 
     <!-- Top level poller -->
     <int:poller default="true" fixed-rate="10000"/>
 
-    <!-- stores files -->
+    <!-- Stores files -->
     <int:channel id="files"/>
 
-    <!-- stores job requests -->
+    <!-- Stores job requests -->
     <int:channel id="requests"/>
 
-    <!-- end chanel (holds statuses) -->
+    <!-- End chanel (holds statuses) -->
     <int:channel id="statuses">
         <int:queue capacity="10"/>
     </int:channel>
 
-    <!-- job executions holder-->
+    <!-- Job executions holder-->
     <int:channel id="jobExecutions"/>
-
-    <!-- additional. to execute in chunks -->
-    <int:channel id="chunks"/>
 
     <!-- chanel to restart job in case an error -->
     <int:channel id="jobRestarts" />
@@ -171,9 +164,9 @@
     <!-- Poller to pull files into the chanel -->
     <int-file:inbound-channel-adapter id="pollDataFile" directory="data/transactionImport" channel="files"/>
 
-    <!-- receives files from chanel and creates spring batch job requests to requests chanel-->
+    <!-- Receives files from chanel and creates spring batch job requests to requests chanel-->
     <int:transformer id="prepareJobLaunchRequest" input-channel="files" output-channel="requests">
-        <bean class="org.spring.batch.infrastructure.spring_integration.FileMessageToJobRequest">
+        <bean class="org.spring.batch.infrastructure.spring_integration.transformer.FileMessageToJobRequestTransformer">
             <property name="job" ref="importTransactions"/>
             <property name="fileParameterName" value="input.file.name"/>
         </bean>
@@ -186,21 +179,21 @@
         </bean>
     </int:service-activator>
 
-    <!-- gateway listener that captures executions and puts into jobExecutions chanel-->
+    <!-- Gateway listener that captures executions and puts into jobExecutions chanel-->
     <int:gateway id="notificationExecutionsListener"
                  service-interface="org.springframework.batch.core.JobExecutionListener"
                  default-request-channel="jobExecutions"/>
 
     <!-- Based on job executions routs to jobRestarts if error otherwise to completeApplication and notifiableExecutions -->
     <int:router id="executionsRouter" input-channel="jobExecutions">
-        <bean class="org.spring.batch.infrastructure.spring_integration.JobExecutionRouter"/>
+        <bean class="org.spring.batch.infrastructure.spring_integration.router.JobExecutionRouter"/>
     </int:router>
 
-    <!-- retries job if failed based on router-->
+    <!-- Retries job if failed based on router-->
     <int:chain input-channel="jobRestarts">
         <int:delayer id="wait5sec" default-delay="5000"/>
         <int:service-activator>
-            <bean class="org.spring.batch.infrastructure.spring_integration.JobRestart"/>
+            <bean class="org.spring.batch.infrastructure.spring_integration.service_activator.JobRestart"/>
         </int:service-activator>
     </int:chain>
 
@@ -208,10 +201,10 @@
     <int:transformer id="mailBodyTransformer"
                      input-channel="notifiableExecutions"
                      output-channel="mailNotifications">
-        <bean class="org.spring.batch.infrastructure.spring_integration.ExecutionsToMailTransformer"/>
+        <bean class="org.spring.batch.infrastructure.spring_integration.transformer.ExecutionsToMailTransformer"/>
     </int:transformer>
 
-    <!-- sends email messages based on mailSender functionality-->
+    <!-- Sends email messages based on mailSender functionality-->
     <int-mail:outbound-channel-adapter id="notificationsSender"
                                        channel="mailNotifications" mail-sender="mailSender"/>
 
