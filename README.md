@@ -4,15 +4,15 @@ A project that shows spring batch capabilities and integration with other framew
 # Project structure
 Each sub project follows the structure
 Maven project that consists of the following parts:
-- Java main classes are under (`src/main/java/main`) with different demo samples
-- Test extentions for executing tests with spring batch (`src/test/java`)
+- Java main classes are under (`src/main/java/main`) with different demo samples. Each example file ends on `Example` and has main method to be executed. Logging is provided on good level and configurable in log4j config
+- Test extentions for executing tests with spring batch (`src/test/java`) and run during the build
 
 # Building project
 `mvn clean package`
 
 # Sub projects
-- `spring-batch-core-components` contains spring batch components that might be used in other modules
-- `spring-batch-default` contains general examples
+- `spring-batch-core-components` contains spring batch components that might be used in other modules. Also contains common sql scripts.
+- `spring-batch-default` contains general examples with different configurations and with integration with other frameworks/libraries
 - `spring-batch-jpa` contains jpa and hibernate examples that conflict with general examples because of spring version higher than spring batch uses
 
 # Pom.xml
