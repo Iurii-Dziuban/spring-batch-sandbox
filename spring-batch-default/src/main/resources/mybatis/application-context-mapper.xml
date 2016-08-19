@@ -95,11 +95,11 @@
         </batch:validator>
     </batch:job>
 
-    <!-- create tables automatically on start up-->
+    <!-- create job-meta tables automatically -->
     <jdbc:initialize-database data-source="dataSource" ignore-failures="DROPS">
-        <jdbc:script location="../../../../../spring-batch-core-components/src/main/resources/org/spring/batch/db-scripts/schema-drop-db.sql" />
-        <jdbc:script location="../../../../../spring-batch-core-components/src/main/resources/org/spring/batch/db-scripts/schema-create-db.sql" />
-        <jdbc:script location="../../../../../spring-batch-core-components/src/main/resources/org/spring/batch/db-scripts/schema-populate-db.sql" />
+        <jdbc:script location="org/spring/batch/db-scripts/schema-drop-db.sql" />
+        <jdbc:script location="org/spring/batch/db-scripts/schema-create-db.sql" />
+        <jdbc:script location="org/spring/batch/db-scripts/schema-populate-db.sql" />
     </jdbc:initialize-database>
 
     <!-- Mybatis configuration. Short name of the queryId is enough -->

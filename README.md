@@ -5,19 +5,32 @@ A project that shows spring batch capabilities and integration with other framew
 Each sub project follows the structure
 Maven project that consists of the following parts:
 - Java main classes are under (`src/main/java/main`) with different demo samples
-- Test extentions for executing tests with spring batch (src/test/java)
+- Test extentions for executing tests with spring batch (`src/test/java`)
 
 # Building project
-`mvn clean package` to build
+`mvn clean package`
 
-# Subprojects
-`spring-batch-core-components` contains spring batch components that might be used in other modules
-`spring-batch-default` contains general examples
-`spring-batch-jpa` contains jpa and hibernate examples that conflict with general examples because of spring version higher than spring batch uses
+# Sub projects
+- `spring-batch-core-components` contains spring batch components that might be used in other modules
+- `spring-batch-default` contains general examples
+- `spring-batch-jpa` contains jpa and hibernate examples that conflict with general examples because of spring version higher than spring batch uses
 
 # Pom.xml
-Libraries: spring-batch-core, spring-batch-infrastructure, spring-retry, spring-jdbc for db population, commons-dbcp2 for database connection pool, h2 file based database for ease of db usage, log4j logging (possibility to configure) via slf4j.
-Integration with jpa, hibernate, mybatis, mongo, schedulers: cron and quartz
+Libraries:
+- spring-batch-core
+- spring-batch-infrastructure
+- spring-retry
+- spring-jdbc for db population
+- commons-dbcp2 for database connection pool
+- h2 file based database for ease of db usage
+- log4j logging (possibility to configure) via slf4j
+
+Integration with:
+- jpa
+- hibernate
+- mybatis
+- mongo
+- schedulers: cron and quartz
 
 # Logging
 Spring batch logging logic.
@@ -25,6 +38,18 @@ Spring batch logging logic.
 - Commons logging is configured to use Log4j under the hood.
 
 # Spring batch main features demo
+##`spring-batch-core-components`
+Main components are under `src/main/java/org/spring/batch/infrastructure` folder.
+- `completion_policy` for chunk completion
+- `listeners` job and step listeners
+- `model` contains model to be used in examples
+- `partitioner` partitioner implementation
+- `processors` step processors
+- `readers` step readers
+- `scheduler` scheduler components
+- `validator` job validators
+- `writers` job writers
+
 ##`spring-batch-default`
 Main features examples are under src/main/java folder. It is simply classes with main methods, that explain the feature and ready to be executed and provide log that shows the results.
 - `concurrent` for concurrent features
@@ -38,6 +63,7 @@ Main features examples are under src/main/java folder. It is simply classes with
 - `scheduler` with scheduling features based on cron and quartz
 
 ## `spring-batch-jpa`
+Main features examples are under src/main/java folder. It is simply classes with main methods, that explain the feature and ready to be executed and provide log that shows the results.
 - `hibernate` with Hibernate reader/writers capabilities and integration (hibernate dependency has dependency conflict. To enable example uncomment hibernate dependency)
 - `jpa` with JPA reader/writers capabilities and integration (hibernate dependency has dependency conflict. To enable example uncomment hibernate jpa dependency)
 
