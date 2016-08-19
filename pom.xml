@@ -5,12 +5,14 @@
     <groupId>spring-batch</groupId>
     <artifactId>spring-batch-sandbox</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
     <name>spring-batch-sandbox</name>
     <url>http://maven.apache.org</url>
 
     <modules>
+        <module>spring-batch-core-components</module>
         <module>spring-batch-default</module>
+        <module>spring-batch-jpa</module>
     </modules>
 
 </project>

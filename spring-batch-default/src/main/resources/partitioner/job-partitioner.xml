@@ -109,9 +109,9 @@
 
     <!-- create job-meta tables automatically -->
     <jdbc:initialize-database data-source="dataSource" ignore-failures="DROPS">
-        <jdbc:script location="org/spring/batch/db-scripts/schema-drop-db.sql" />
-        <jdbc:script location="org/spring/batch/db-scripts/schema-create-db.sql" />
-        <jdbc:script location="org/spring/batch/db-scripts/schema-populate-db-partitioning.sql" />
+        <jdbc:script location="../../../../../spring-batch-core-components/src/main/resources/org/spring/batch/db-scripts/schema-drop-db.sql" />
+        <jdbc:script location="../../../../../spring-batch-core-components/src/main/resources/org/spring/batch/db-scripts/schema-create-db.sql" />
+        <jdbc:script location="../../../../../spring-batch-core-components/src/main/resources/org/spring/batch/db-scripts/schema-populate-db-partitioning.sql" />
     </jdbc:initialize-database>
 
 </beans>
