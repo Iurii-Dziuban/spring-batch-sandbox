@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns:batch="http://www.springframework.org/schema/batch"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns="http://www.springframework.org/schema/beans"
        xmlns:jdbc="http://www.springframework.org/schema/jdbc"
        xsi:schemaLocation="http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
 		http://www.springframework.org/schema/jdbc
         http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
 
     <bean id="dataSource"
           class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
         <property name="driverClassName"><value>org.h2.Driver</value></property>
-        <property name="url"><value>jdbc:h2:./db/exceptionalDb</value></property>
+        <property name="url"><value>jdbc:h2:./db/complexRetryExceptionalDb</value></property>
         <property name="username"><value>sa</value></property>
         <property name="password"><value></value></property>
         <property name="maxIdle"><value>1</value></property>
@@ -57,12 +56,14 @@
                               class="org.springframework.batch.item.support.CompositeItemProcessor">
                             <property name="delegates">
                                 <list>
+                                    <!-- Throwing exceptions processor -->
                                     <bean class="org.spring.batch.infrastructure.processors.ThrowingExceptionProcessor" scope="step"/>
                                 </list>
                             </property>
                         </bean>
                     </batch:processor>
                     <batch:retry-policy>
+                        <!-- Retry policy -->
                         <bean id="retryPolicy"
                               class="org.springframework.retry.policy.ExceptionClassifierRetryPolicy">
                             <property name="policyMap">

@@ -25,7 +25,7 @@ public class CronScheduler {
             String dateParam = new Date().toString();
             JobParameters param = new JobParametersBuilder().addString("date", dateParam).toJobParameters();
             JobExecution execution = jobLauncher.run(job, param);
-            System.out.println("Exit Status : " + execution.getStatus());
+            LOGGER.info("Exit Status : " + execution.getStatus());
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
         }

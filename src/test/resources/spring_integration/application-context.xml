@@ -17,6 +17,12 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd">
 
+    <!-- example is inspired by  https://github.com/GeoKnow/spring-batch-admin/tree/master/spring-batch-integration
+         and https://github.com/ghillert/spring-batch-integration-sample examples
+
+         doc can be found http://docs.spring.io/spring-batch/reference/html/springBatchIntegration.html
+    -->
+
     <bean id="dataSource"
           class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
         <property name="driverClassName"><value>org.h2.Driver</value></property>
@@ -55,7 +61,7 @@
                 <batch:chunk reader="itemReader" processor="itemProcessorAsync" writer="asyncWriter" commit-interval="1">
                     <batch:listeners>
                         <batch:listener>
-                            <bean class="org.spring.batch.infrastructure.spring_integration.TransactionChunkListener"/>
+                            <bean class="org.batch.integration.spring_integration.TransactionChunkListener"/>
                         </batch:listener>
                     </batch:listeners>
                 </batch:chunk>
@@ -83,7 +89,7 @@
                     </bean>
                 </property>
                 <property name="fieldSetMapper">
-                    <bean class="org.spring.batch.infrastructure.spring_integration.TransactionFieldSetMapper" />
+                    <bean class="org.batch.integration.spring_integration.TransactionFieldSetMapper" />
                 </property>
             </bean>
         </property>
@@ -166,7 +172,7 @@
 
     <!-- Receives files from chanel and creates spring batch job requests to requests chanel-->
     <int:transformer id="prepareJobLaunchRequest" input-channel="files" output-channel="requests">
-        <bean class="org.spring.batch.infrastructure.spring_integration.transformer.FileMessageToJobRequestTransformer">
+        <bean class="org.batch.integration.spring_integration.transformer.FileMessageToJobRequestTransformer">
             <property name="job" ref="importTransactions"/>
             <property name="fileParameterName" value="input.file.name"/>
         </bean>
@@ -186,14 +192,14 @@
 
     <!-- Based on job executions routs to jobRestarts if error otherwise to completeApplication and notifiableExecutions -->
     <int:router id="executionsRouter" input-channel="jobExecutions">
-        <bean class="org.spring.batch.infrastructure.spring_integration.router.JobExecutionRouter"/>
+        <bean class="org.batch.integration.spring_integration.router.JobExecutionRouter"/>
     </int:router>
 
     <!-- Retries job if failed based on router-->
     <int:chain input-channel="jobRestarts">
         <int:delayer id="wait5sec" default-delay="5000"/>
         <int:service-activator>
-            <bean class="org.spring.batch.infrastructure.spring_integration.service_activator.JobRestart"/>
+            <bean class="org.batch.integration.spring_integration.service_activator.JobRestart"/>
         </int:service-activator>
     </int:chain>
 
@@ -201,14 +207,14 @@
     <int:transformer id="mailBodyTransformer"
                      input-channel="notifiableExecutions"
                      output-channel="mailNotifications">
-        <bean class="org.spring.batch.infrastructure.spring_integration.transformer.ExecutionsToMailTransformer"/>
+        <bean class="org.batch.integration.spring_integration.transformer.ExecutionsToMailTransformer"/>
     </int:transformer>
 
     <!-- Sends email messages based on mailSender functionality-->
     <int-mail:outbound-channel-adapter id="notificationsSender"
                                        channel="mailNotifications" mail-sender="mailSender"/>
 
-    <bean id="mailSender" class="org.spring.batch.infrastructure.spring_integration.StubJavaMailSender">
+    <bean id="mailSender" class="org.batch.integration.spring_integration.StubJavaMailSender">
         <constructor-arg>
             <bean class="javax.mail.internet.MimeMessage">
                 <constructor-arg type="javax.mail.Session"><null/></constructor-arg>

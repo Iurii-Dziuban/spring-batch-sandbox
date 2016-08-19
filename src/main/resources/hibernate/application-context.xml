@@ -8,6 +8,8 @@
 		http://www.springframework.org/schema/jdbc
         http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
 
+    <!-- Hibernate usage example -->
+
     <bean id="dataSource"
           class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
         <property name="driverClassName"><value>org.h2.Driver</value></property>
@@ -20,7 +22,7 @@
     <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
         <property name="dataSource" ref="dataSource" />
 
-        <!-- better configuration -->
+        <!-- Way of better configuration to use hibernate config file -->
         <!-- <property name="configLocation" value="classpath:hibernate/hibernate.cfg.xml" /> -->
 
         <property name="mappingLocations" value="classpath:/hibernate/HibernateTransaction.hbm.xml" />
@@ -56,6 +58,7 @@
                 <!-- processor-transactional="false" no retries or skips. Processor called once per item -->
                 <batch:chunk commit-interval="500">
                     <batch:reader>
+                        <!-- TODO cursor item reader... what about HibernatePageItemReader -->
                         <bean class="org.springframework.batch.item.database.HibernateCursorItemReader">
                             <property name="sessionFactory" ref="sessionFactory" />
                             <property name="queryString" value="from Transaction" />

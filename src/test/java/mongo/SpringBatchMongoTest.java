@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import static org.junit.Assert.assertEquals;
+
 /**
  * Created by iurii.dziuban on 08.08.2016.
  */
@@ -28,7 +30,6 @@ public class SpringBatchMongoTest {
     @Test
     public void launchJob() throws Exception {
         JobExecution jobExecution = jobLauncherTestUtils.launchStep("step1");
-
-        Assert.assertEquals(BatchStatus.COMPLETED, jobExecution.getStatus());
+        assertEquals(BatchStatus.COMPLETED, jobExecution.getStatus());
     }
 }

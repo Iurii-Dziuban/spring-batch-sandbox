@@ -12,7 +12,7 @@
     <bean id="dataSource"
           class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
         <property name="driverClassName"><value>org.h2.Driver</value></property>
-        <property name="url"><value>jdbc:h2:./db/exceptionalDb</value></property>
+        <property name="url"><value>jdbc:h2:./db/retryExceptionalDb</value></property>
         <property name="username"><value>sa</value></property>
         <property name="password"><value></value></property>
         <property name="maxIdle"><value>1</value></property>
@@ -56,6 +56,7 @@
                         <bean id="compositeItemProcessor"
                               class="org.springframework.batch.item.support.CompositeItemProcessor">
                             <property name="delegates">
+                                <!-- Failing processor -->
                                 <list>
                                     <bean class="org.spring.batch.infrastructure.processors.ThrowingExceptionProcessor" scope="step"/>
                                 </list>
@@ -109,7 +110,4 @@
             <bean class="org.spring.batch.infrastructure.validators.ParametersValidator"/>
         </batch:validator>
     </batch:job>
-
-    <util:list id="transactions" value-type="org.spring.batch.infrastructure.model.Transaction"/>
-
 </beans>

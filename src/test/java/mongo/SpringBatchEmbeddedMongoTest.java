@@ -13,7 +13,6 @@ import de.flapdoodle.embed.mongo.config.Net;
 import de.flapdoodle.embed.mongo.distribution.Version;
 import de.flapdoodle.embed.process.runtime.Network;
 import org.junit.AfterClass;
-import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,6 +24,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.Date;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by iurii.dziuban on 09.08.2016.
@@ -70,11 +71,14 @@ public class SpringBatchEmbeddedMongoTest {
 
     @Test
     public void launchJob() throws Exception {
+        JobExecution jobExecution = jobLauncherTestUtils.launchJob();
+        assertEquals(BatchStatus.COMPLETED, jobExecution.getStatus());
+    }
 
-        //JobExecution jobExecution = jobLauncherTestUtils.launchJob();
+    @Test
+    public void launchStep() throws Exception {
         JobExecution jobExecution = jobLauncherTestUtils.launchStep("step1");
-
-        Assert.assertEquals(BatchStatus.COMPLETED, jobExecution.getStatus());
+        assertEquals(BatchStatus.COMPLETED, jobExecution.getStatus());
     }
 
     @AfterClass

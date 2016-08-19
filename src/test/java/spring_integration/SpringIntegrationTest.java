@@ -25,7 +25,8 @@ public class SpringIntegrationTest {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    @Autowired @Qualifier("statuses")
+    @Autowired
+    @Qualifier("statuses")
     private QueueChannel statusesChannel;
 
     @Autowired
@@ -39,6 +40,7 @@ public class SpringIntegrationTest {
         ExitStatus exitStatus = jobExecution.getExitStatus();
         assertEquals(ExitStatus.COMPLETED, exitStatus);
         int count = jdbcTemplate.queryForObject("select count(*) from transactions", Integer.class);
+        // nothing was written to db. Result is as it was initially.
         assertEquals(3, count);
 }
 }

@@ -8,6 +8,8 @@
 		http://www.springframework.org/schema/jdbc
         http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
 
+    <!-- Simple jdbc batch job example -->
+
     <!-- Step will need a transaction manager -->
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager" scope="step">
         <property name="dataSource" ref="dataSource"/>
@@ -101,9 +103,10 @@
         </batch:validator>
     </batch:job>
 
-    <bean id="completionPolicy" class="org.spring.batch.infrastructure.completion_policy.CustomCompletionPolicy">
+    <bean id="completionPolicy" class="org.batch.integration.completion_policy.CustomCompletionPolicy">
     </bean>
 
+    <!-- TODO jdbc Cursor Reader. What about Page reader example -->
     <bean id="transactionReader" class="org.springframework.batch.item.database.JdbcCursorItemReader" scope="step">
         <property name="fetchSize" value="500"/>
         <property name="dataSource" ref="dataSource"/>

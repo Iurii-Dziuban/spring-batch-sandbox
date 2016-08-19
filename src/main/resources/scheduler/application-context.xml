@@ -129,12 +129,13 @@
 
     <bean id="taskExecutor" class="org.springframework.core.task.SyncTaskExecutor" />
 
+    <!-- Cron job definition -->
     <bean id="runScheduler" class="org.spring.batch.infrastructure.scheduler.CronScheduler">
         <property name="job" ref="transactionJob" />
         <property name="jobLauncher" ref="jobLauncher" />
     </bean>
 
-    <!-- Run every 5 seconds -->
+    <!-- Cron scheduler to run job every 5 seconds -->
     <task:scheduled-tasks>
         <task:scheduled ref="runScheduler" method="run" cron="*/5 * * * * *" />
     </task:scheduled-tasks>

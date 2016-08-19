@@ -10,6 +10,8 @@
 	http://www.springframework.org/schema/jdbc
     http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
 
+    <!-- Inspired by  http://docs.spring.io/spring-batch/reference/html/scalability.html example-->
+
     <!-- Step will need a transaction manager -->
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager" scope="step">
         <property name="dataSource" ref="dataSource"/>
@@ -36,25 +38,27 @@
         <!-- master step, 10 threads (grid-size)  -->
         <batch:step id="masterStep">
             <batch:partition step="slave" partitioner="rangePartitioner">
+                <!-- grid size - number of element in a batch -->
                 <batch:handler grid-size="3" task-executor="taskExecutor" />
             </batch:partition>
         </batch:step>
 
     </batch:job>
 
-    <!-- each thread will run this job, with different stepExecutionContext values. -->
+    <!-- Each thread will run this job, with different stepExecutionContext values and particular range -->
     <batch:step id="slave">
         <batch:tasklet>
             <batch:chunk reader="pagingItemReader" writer="flatFileItemWriter" processor="itemProcessor" commit-interval="1" />
         </batch:tasklet>
     </batch:step>
 
+    <!-- Partitioner implementation -->
     <bean id="rangePartitioner" class="org.spring.batch.infrastructure.partitioner.RangePartitioner" />
 
     <bean id="taskExecutor" class="org.springframework.core.task.SimpleAsyncTaskExecutor" />
 
     <!-- inject stepExecutionContext -->
-    <bean id="itemProcessor" class="org.spring.batch.infrastructure.partitioner.TransactionProcessor" scope="step">
+    <bean id="itemProcessor" class="org.spring.batch.infrastructure.processors.TransactionProcessor" scope="step">
         <property name="threadName" value="#{stepExecutionContext[name]}" />
     </bean>
 

@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns:batch="http://www.springframework.org/schema/batch"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns="http://www.springframework.org/schema/beans"
        xmlns:jdbc="http://www.springframework.org/schema/jdbc"
        xsi:schemaLocation="http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
 		http://www.springframework.org/schema/jdbc
         http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
+
+    <!-- Parallel example with making two parallel independent flows inside a job -->
 
     <!-- Step will need a transaction manager -->
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager" scope="step">
@@ -120,7 +121,6 @@
             </batch:flow>
         </batch:split>
 
-
         <batch:listeners>
             <batch:listener>
                 <bean class="org.spring.batch.infrastructure.listeners.JobListener">
@@ -133,26 +133,6 @@
         </batch:validator>
     </batch:job>
 
-
-    <bean id="transactionReader" class="org.springframework.batch.item.database.JdbcCursorItemReader" scope="step">
-        <property name="fetchSize" value="500"/>
-        <property name="dataSource" ref="dataSource"/>
-        <property name="saveState" value="false" />
-        <property name="sql" value="
-            SELECT id,
-                   name
-            FROM transactions
-        "/>
-        <property name="rowMapper">
-            <bean class="org.springframework.jdbc.core.BeanPropertyRowMapper">
-                <property name="checkFullyPopulated" value="true"/>
-                <property name="mappedClass" value="org.spring.batch.infrastructure.model.Transaction"/>
-            </bean>
-        </property>
-    </bean>
-
-    <util:list id="transactions" value-type="org.spring.batch.infrastructure.model.Transaction"/>
-
     <!-- create job-meta tables automatically -->
     <jdbc:initialize-database data-source="dataSource" ignore-failures="DROPS">
         <jdbc:script location="org/spring/batch/db-scripts/schema-drop-db.sql" />
@@ -161,5 +141,4 @@
     </jdbc:initialize-database>
 
     <bean id="taskExecutor" class="org.springframework.core.task.SimpleAsyncTaskExecutor" />
-
 </beans>

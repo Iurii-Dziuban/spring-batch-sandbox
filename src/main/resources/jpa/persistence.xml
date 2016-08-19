@@ -4,7 +4,7 @@
              xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
                                  http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd" version="1.0">
 
-    <!-- examples https://gist.github.com/mortezaadi/8619433 a bit outdated-->
+    <!-- TODO examples to use different configs https://gist.github.com/mortezaadi/8619433 a bit outdated-->
 
     <persistence-unit name="h2" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>

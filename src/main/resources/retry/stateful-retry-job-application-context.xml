@@ -12,7 +12,7 @@
         http://www.springframework.org/schema/aop
         http://www.springframework.org/schema/aop/spring-aop.xsd">
 
-    <!-- TODO implement statefull -->
+    <!-- Stateful retry is implemented -->
 
     <bean id="dataSource"
           class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
@@ -88,6 +88,7 @@
         </batch:validator>
     </batch:job>
 
+    <!-- COnfiguring retry of throwing exception processor -->
     <aop:config>
         <aop:pointcut id="transactional"
                       expression="execution(* org.spring.batch.infrastructure.processors.ThrowingExceptionProcessor.process(..))" />
@@ -95,6 +96,7 @@
                      advice-ref="retryAdvice" order="-1" />
     </aop:config>
 
+    <!-- Stateful retry template -->
     <bean id="retryTemplate" class="org.springframework.batch.core.step.item.BatchRetryTemplate">
         <property name="listeners">
             <array>
@@ -102,10 +104,12 @@
             </array>
         </property>
         <property name="retryContextCache">
+            <!-- Stores states -->
             <bean class="org.springframework.retry.policy.MapRetryContextCache">
             </bean>
         </property>
         <property name="retryPolicy">
+            <!-- retry policy with 2 times to retry -->
             <bean class="org.springframework.retry.policy.SimpleRetryPolicy">
                 <constructor-arg name="maxAttempts" value="2" />
                 <constructor-arg name="retryableExceptions">
@@ -116,10 +120,11 @@
             </bean>
         </property>
         <property name="backOffPolicy">
+            <!-- back off policy - what to do in case retry was unsuccessful -->
             <bean class="org.springframework.retry.backoff.FixedBackOffPolicy">
                 <property name="backOffPeriod" value="1000" />
                 <property name="sleeper">
-                    <bean class="org.spring.batch.infrastructure.retry.LoggingThreadWaitSleeper">
+                    <bean class="org.batch.integration.retry.LoggingThreadWaitSleeper">
                     </bean>
                 </property>
             </bean>
@@ -129,13 +134,14 @@
     <bean id="retryAdvice" name="retryAdvice" class="org.springframework.retry.interceptor.StatefulRetryOperationsInterceptor">
        <property name="retryOperations" ref="retryTemplate" />
         <property name="recoverer">
-            <bean class="org.spring.batch.infrastructure.retry.recoverer.TransactionRecoverer" />
+            <!-- Recoverer - what to do in case all retries failed -->
+            <bean class="org.batch.integration.retry.recoverer.TransactionRecoverer" />
         </property>
         <property name="newItemIdentifier">
-            <bean class="org.spring.batch.infrastructure.retry.stateful.TransactionNewMethodArgumentsIdentifier" />
+            <bean class="org.batch.integration.retry.stateful.TransactionNewMethodArgumentsIdentifier" />
         </property>
         <property name="keyGenerator">
-            <bean class="org.spring.batch.infrastructure.retry.stateful.TransactionMethodArgumentsKeyGenerator" />
+            <bean class="org.batch.integration.retry.stateful.TransactionMethodArgumentsKeyGenerator" />
         </property>
     </bean>
 

@@ -7,7 +7,6 @@
     <!-- this bean should auto load -->
     <bean class="org.springframework.batch.test.JobLauncherTestUtils"/>
 
-
     <!-- https://github.com/jirutka/embedmongo-spring -->
     <bean id="mongo" class="cz.jirutka.spring.embedmongo.EmbeddedMongoFactoryBean">
         <property name="version" value="2.4.5" />
@@ -15,7 +14,9 @@
         <property name="port" value="12345" />
     </bean>
 
-    <!-- @Bean(destroyMethod="close")
+    <!-- example of declarative Mongo db creation
+
+    @Bean(destroyMethod="close")
     public Mongo mongo() throws IOException {
     return new EmbeddedMongoBuilder()
             .version("2.4.5")

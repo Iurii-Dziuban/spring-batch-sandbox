@@ -12,6 +12,8 @@
         http://www.springframework.org/schema/aop
         http://www.springframework.org/schema/aop/spring-aop.xsd">
 
+    <!-- Stateless retry failing processor example -->
+
     <bean id="dataSource"
           class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
         <property name="driverClassName"><value>org.h2.Driver</value></property>
@@ -55,6 +57,7 @@
                         </bean>
                     </batch:writer>
 
+                    <!-- Processor throws exceptions -->
                     <batch:processor>
                         <bean class="org.spring.batch.infrastructure.processors.ThrowingExceptionProcessor" scope="step"/>
                     </batch:processor>
@@ -85,6 +88,7 @@
         </batch:validator>
     </batch:job>
 
+    <!-- aop retry config -->
     <aop:config>
         <aop:pointcut id="transactional"
                       expression="execution(* org.spring.batch.infrastructure.processors.ThrowingExceptionProcessor.process(..))" />
@@ -105,10 +109,11 @@
             </bean>
         </property>
         <property name="backOffPolicy">
+            <!-- back off policy - what to do in case retry was unsuccessful -->
             <bean class="org.springframework.retry.backoff.FixedBackOffPolicy">
                 <property name="backOffPeriod" value="1000" />
                 <property name="sleeper">
-                    <bean class="org.spring.batch.infrastructure.retry.LoggingThreadWaitSleeper">
+                    <bean class="org.batch.integration.retry.LoggingThreadWaitSleeper">
                     </bean>
                 </property>
             </bean>
@@ -122,8 +127,9 @@
 
     <bean id="retryAdvice" class="org.springframework.retry.interceptor.RetryOperationsInterceptor">
        <property name="retryOperations" ref="retryTemplate" />
+        <!-- Recoverer - what to do in case all retries failed -->
         <property name="recoverer">
-            <bean class="org.spring.batch.infrastructure.retry.recoverer.TransactionRecoverer" />
+            <bean class="org.batch.integration.retry.recoverer.TransactionRecoverer" />
         </property>
     </bean>
 

@@ -27,5 +27,4 @@ public class SpringBatchJavaConfigTest {
     public void test() throws Exception {
         jobLauncher.run(job, new JobParameters());
     }
-
 }

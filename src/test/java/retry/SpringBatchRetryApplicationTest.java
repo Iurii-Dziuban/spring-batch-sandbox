@@ -2,8 +2,8 @@ package retry;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.spring.batch.infrastructure.retry.application.RetryApplication;
-import org.spring.batch.infrastructure.retry.application.RetryableService;
+import org.batch.integration.retry.application.RetryApplication;
+import org.batch.integration.retry.application.RetryableService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;

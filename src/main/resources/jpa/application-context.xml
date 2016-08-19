@@ -17,7 +17,8 @@
         <property name="maxIdle"><value>1</value></property>
     </bean>
 
-    <!-- <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+    <!-- TODO Possible hibernate configuration to be used
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
         <property name="dataSource" ref="dataSource" />
 
         <property name="mappingLocations" value="classpath:/hibernate/orm.xml" />
@@ -32,6 +33,7 @@
         </property>
     </bean> -->
 
+    <!-- JPA entity manager configuration for hibernate usage -->
     <bean id="entityManagerFactory"
           class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="dataSource" ref="dataSource" />
@@ -67,6 +69,7 @@
             <batch:tasklet>
                 <!-- processor-transactional="false" no retries or skips. Processor called once per item -->
                 <batch:chunk commit-interval="500">
+                    <!-- JPA reader example -->
                     <batch:reader>
                         <bean class="org.springframework.batch.item.database.JpaPagingItemReader">
                             <property name="entityManagerFactory" ref="entityManagerFactory" />
@@ -77,6 +80,7 @@
                         <bean id="compositeItemWriter" class="org.springframework.batch.item.support.CompositeItemWriter">
                             <property name="delegates">
                                 <list>
+                                    <!-- JPA item writer example -->
                                     <bean id="writer" class="org.springframework.batch.item.database.JpaItemWriter">
                                         <property name="entityManagerFactory" ref="entityManagerFactory" />
                                     </bean>
@@ -85,6 +89,7 @@
                         </bean>
                     </batch:writer>
 
+                    <!-- Simple Identity with logging processor -->
                     <batch:processor>
                         <bean id="compositeItemProcessor"
                               class="org.springframework.batch.item.support.CompositeItemProcessor">
@@ -95,6 +100,7 @@
                             </property>
                         </bean>
                     </batch:processor>
+
                     <batch:skip-policy>
                         <bean class="org.springframework.batch.core.step.skip.NeverSkipItemSkipPolicy" scope="step"/>
                     </batch:skip-policy>

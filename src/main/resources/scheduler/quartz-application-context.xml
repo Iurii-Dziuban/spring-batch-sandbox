@@ -132,12 +132,13 @@
 
     <bean id="taskExecutor" class="org.springframework.core.task.SyncTaskExecutor" />
 
+    <!-- Job scheduler -->
     <bean id="runScheduler" class="org.spring.batch.infrastructure.scheduler.CronScheduler">
         <property name="job" ref="transactionJob" />
         <property name="jobLauncher" ref="jobLauncher" />
     </bean>
 
-    <!-- run every 10 seconds -->
+    <!-- Quartz scheduler to run job every 10 seconds -->
     <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
         <property name="triggers">
             <bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">

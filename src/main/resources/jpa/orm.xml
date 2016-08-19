@@ -4,6 +4,7 @@
                  xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm
                                      http://java.sun.com/xml/ns/persistence/orm_1_0.xsd"
                  version="1.0">
+    <!-- Entity mapping -->
     <description>My First JPA XML Application</description>
     <package>org.spring.batch.infrastructure.model</package>
     <entity class="org.spring.batch.infrastructure.model.Transaction" name="Transaction">
