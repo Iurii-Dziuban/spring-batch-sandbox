@@ -13,7 +13,7 @@
     <bean id="dataSource"
           class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
         <property name="driverClassName"><value>org.h2.Driver</value></property>
-        <property name="url"><value>jdbc:h2:./db/inMemoryDb</value></property>
+        <property name="url"><value>jdbc:h2:./db/hibernateDb</value></property>
         <property name="username"><value>sa</value></property>
         <property name="password"><value></value></property>
         <property name="maxIdle"><value>1</value></property>
@@ -58,7 +58,6 @@
                 <!-- processor-transactional="false" no retries or skips. Processor called once per item -->
                 <batch:chunk commit-interval="500">
                     <batch:reader>
-                        <!-- TODO cursor item reader... what about HibernatePageItemReader -->
                         <bean class="org.springframework.batch.item.database.HibernateCursorItemReader">
                             <property name="sessionFactory" ref="sessionFactory" />
                             <property name="queryString" value="from Transaction" />
@@ -121,5 +120,12 @@
             <bean class="org.spring.batch.infrastructure.validators.ParametersValidator"/>
         </batch:validator>
     </batch:job>
+
+    <!-- create job-meta tables automatically -->
+    <jdbc:initialize-database data-source="dataSource" ignore-failures="DROPS">
+        <jdbc:script location="org/spring/batch/db-scripts/schema-drop-db.sql" />
+        <jdbc:script location="org/spring/batch/db-scripts/schema-create-db.sql" />
+        <jdbc:script location="org/spring/batch/db-scripts/schema-populate-db.sql" />
+    </jdbc:initialize-database>
 
 </beans>

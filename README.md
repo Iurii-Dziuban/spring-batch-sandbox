@@ -19,13 +19,11 @@ Main features examples are under src/main/java folder. It is simply classes with
 - `hibernate` with Hibernate reader/writers capabilities and integration (hibernate dependency has dependency conflict. To enable example uncomment hibernate dependency)
 - `in_memory` with in memory simple reader/writers capabilities and integration
 - `jpa` with JPA reader/writers capabilities and integration (hibernate dependency has dependency conflict. To enable example uncomment hibernate jpa dependency)
-- `mybatis` with Mybatis reader/writers capabilities and integration
-- `mongo` with mongo db examples
-- `concurrent` with concurrent and parallel features
-- `partitioner` with partitioner functionality feature
-- `scheduler` with scheduling features based on cron and quartz
-- `retry` with two samples with stateless and stateful retry
 - `jsr352` with jsr job description example
+- `mybatis` with Mybatis reader/writers capabilities and integration
+- `partitioner` with partitioner functionality feature
+- `retry` with two samples with stateless and stateful retry
+- `scheduler` with scheduling features based on cron and quartz
 
 #  Spring batch tests
 Tests are under `src/test/java`

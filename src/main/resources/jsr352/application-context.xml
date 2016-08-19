@@ -34,10 +34,6 @@
         </property>
     </bean>
 
-    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
-        <constructor-arg index="0" ref="dataSource"/>
-    </bean>
-
     <bean id="jobListener" class="org.spring.batch.infrastructure.listeners.JobListener">
     </bean>
 
@@ -68,7 +64,7 @@
     </bean>
 
     <!-- custom completion policy example instead of commit interval -->
-    <bean id="completionPolicy" class="org.batch.integration.completion_policy.CustomCompletionPolicy">
+    <bean id="completionPolicy" class="org.spring.batch.infrastructure.completion_policy.CustomCompletionPolicy">
     </bean>
 
     <bean id="transactionReader" class="org.springframework.batch.item.database.JdbcCursorItemReader">

@@ -1,4 +1,4 @@
-package main.general.java_config;
+package org.batch.integration.java_config;
 
 import javax.sql.DataSource;
 

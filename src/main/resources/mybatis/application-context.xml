@@ -25,10 +25,6 @@
         <property name="maxIdle"><value>1</value></property>
     </bean>
 
-    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
-        <constructor-arg index="0" ref="dataSource"/>
-    </bean>
-
     <bean id="jobLauncher" class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
         <property name="jobRepository" ref="jobRepository"/>
     </bean>

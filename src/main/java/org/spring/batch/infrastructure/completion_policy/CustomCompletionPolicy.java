@@ -1,4 +1,4 @@
-package org.batch.integration.completion_policy;
+package org.spring.batch.infrastructure.completion_policy;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

@@ -1,6 +1,6 @@
 package java_config;
 
-import main.general.java_config.StandaloneInfrastructureConfiguration;
+import org.batch.integration.java_config.StandaloneInfrastructureConfiguration;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.batch.core.Job;

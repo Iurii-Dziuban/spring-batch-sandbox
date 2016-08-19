@@ -193,7 +193,7 @@
 
         <!-- NOTE! Spring Batch Hibernate readers writers are not compatible with Hibernate 5 only with Hibernate 4 -->
 
-        <!-- TODO uncomment for hibernate and jpa examples -->
+        <!-- Uncomment for hibernate and jpa examples -->
         <!-- Hibernate -->
         <!-- <dependency>
             <groupId>org.hibernate</groupId>
@@ -267,8 +267,8 @@
                             <port>27017</port>
                             <!-- optional, default is false, if true allocates a random port and overrides embedmongo.port -->
                             <randomPort>false</randomPort>
-                            <!-- optional, default 2.2.1 --> <!--TODO latest version 3.3.0 -->
-                            <version>2.2.1</version>
+                            <!-- optional, default 2.2.1. Latest version 3.3.0 -->
+                            <version>3.3.0</version>
                             <!-- optional, default is a new dir in java.io.tmpdir -->
                             <databaseDirectory>db/mongotest</databaseDirectory>
                             <!-- optional (file|console|none), default console -->

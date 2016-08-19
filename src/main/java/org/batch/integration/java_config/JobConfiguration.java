@@ -1,4 +1,4 @@
-package main.general.java_config;
+package org.batch.integration.java_config;
 
 import org.spring.batch.infrastructure.model.Transaction;
 import org.spring.batch.infrastructure.readers.ListItemReader;

@@ -2,11 +2,11 @@
 <beans xmlns:batch="http://www.springframework.org/schema/batch"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns="http://www.springframework.org/schema/beans"
-       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/jdbc
-        http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
+        http://www.springframework.org/schema/jdbc/spring-jdbc.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
     <!-- Asynchronous example of simple jdbc batch job example with task executor -->
 
@@ -98,16 +98,23 @@
     </batch:job>
 
 
-    <!-- Cursor item reader -->
-    <bean id="transactionReader" class="org.springframework.batch.item.database.JdbcCursorItemReader" scope="step">
+    <!-- JdbcPagingItemReader item reader  example-->
+    <bean id="transactionReader" class="org.springframework.batch.item.database.JdbcPagingItemReader" scope="step">
         <property name="fetchSize" value="500"/>
         <property name="dataSource" ref="dataSource"/>
         <property name="saveState" value="false" />
-        <property name="sql" value="
-            SELECT id,
-                   name
-            FROM transactions
-        "/>
+        <property name="pageSize" value="500" />
+        <property name="queryProvider">
+            <bean class="org.springframework.batch.item.database.support.H2PagingQueryProvider">
+                <property name="selectClause" value="id, name" />
+                <property name="fromClause" value="transactions" />
+                <property name="sortKeys">
+                    <util:map>
+                        <entry key="id" value="ASCENDING" />
+                    </util:map>
+                </property>
+            </bean>
+        </property>
         <property name="rowMapper">
             <bean class="org.springframework.jdbc.core.BeanPropertyRowMapper">
                 <property name="checkFullyPopulated" value="true"/>

@@ -50,10 +50,9 @@ public class SpringBatchEmbeddedMongoTest {
     @BeforeClass
     public static void beforeClass() throws Exception {
         int port = DEFAULT_MONGO_DB_PORT;
-        /** TODO latest version 3.3.0 */
-        /* Mongo 3.2.1 */
+        /* Mongo 3.2.1 Version.Main.PRODUCTION  Latest version 3.3.0 Version.Main.DEVELOPMENT*/
         IMongodConfig mongodConfig = new MongodConfigBuilder()
-                .version(Version.Main.PRODUCTION)
+                .version(Version.Main.DEVELOPMENT)
                 .net(new Net(port, Network.localhostIsIPv6()))
                 .build();
 
