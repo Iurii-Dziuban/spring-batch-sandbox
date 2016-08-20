@@ -1,4 +1,6 @@
 # spring-batch-sandbox
+[![Build Status](https://travis-ci.org/Iurii-Dziuban/spring-batch-sandbox.svg?branch=master)](https://travis-ci.org/Iurii-Dziuban/spring-batch-sandbox)
+
 A project that shows spring batch capabilities and integration with other frameworks (http://projects.spring.io/spring-batch/)
 
 # Project structure
