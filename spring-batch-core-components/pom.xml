@@ -11,7 +11,8 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring.integration.version>4.0.3.RELEASE</spring.integration.version>
+        <spring.integration.version>4.0.5.RELEASE</spring.integration.version>
+        <spring.version>4.0.5.RELEASE</spring.version>
     </properties>
 
     <dependencies>
@@ -92,35 +93,35 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
-            <version>4.0.5.RELEASE</version>
+            <version>${spring.version}</version>
         </dependency>
 
         <!-- Scheduling -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context-support</artifactId>
-            <version>4.0.5.RELEASE</version>
+            <version>${spring.version}</version>
         </dependency>
 
         <!-- Quartz framework -->
         <dependency>
             <groupId>org.quartz-scheduler</groupId>
             <artifactId>quartz</artifactId>
-            <version>1.8.6</version>
+            <version>2.2.3</version>
         </dependency>
 
         <!-- Spring XML to/back object -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-oxm</artifactId>
-            <version>4.0.5.RELEASE</version>
+            <version>${spring.version}</version>
         </dependency>
 
         <!-- Declarative retry -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-aop</artifactId>
-            <version>4.0.5.RELEASE</version>
+            <version>${spring.version}</version>
         </dependency>
 
         <dependency>
@@ -147,7 +148,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-orm</artifactId>
-            <version>4.3.2.RELEASE</version>
+            <version>${spring.version}</version>
         </dependency>
 
         <dependency>
@@ -166,14 +167,14 @@
         <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongo-java-driver</artifactId>
-            <version>2.14.3</version>
+            <version>3.3.0</version>
         </dependency>
 
         <!-- Spring data mongodb -->
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-mongodb</artifactId>
-            <version>1.2.1.RELEASE</version>
+            <version>1.9.2.RELEASE</version>
         </dependency>
 
 
@@ -188,7 +189,7 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
-            <version>1.7.16</version>
+            <version>1.7.21</version>
         </dependency>
 
         <!-- Junit -->
