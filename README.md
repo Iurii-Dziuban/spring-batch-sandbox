@@ -6,6 +6,7 @@
        src="https://scan.coverity.com/projects/9961/badge.svg"/>
 </a>
 [![Dependency Status](https://www.versioneye.com/user/projects/57b8aeb4090d4d0039befe67/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/57b8aeb4090d4d0039befe67)
+[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/Iurii-Dziuban/spring-batch-sandbox/issues)
 
 A project that shows spring batch capabilities and integration with other frameworks (http://projects.spring.io/spring-batch/)
 
