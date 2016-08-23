@@ -8,7 +8,7 @@
 
     <persistence-unit name="h2" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-        <mapping-file>orm.xml</mapping-file>
+        <mapping-file>jpa/orm.xml</mapping-file>
         <properties>
             <property name="hibernate.archive.autodetection" value="class" />
             <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect" />
