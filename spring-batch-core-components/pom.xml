@@ -227,8 +227,8 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.5.1</version>
                 <configuration>
                     <source>1.6</source>
                     <target>1.6</target>
@@ -236,61 +236,64 @@
             </plugin>
 
             <plugin>
-                <groupId>com.github.joelittlejohn.embedmongo</groupId>
-                <artifactId>embedmongo-maven-plugin</artifactId>
-                <version>0.3.4</version>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.19.1</version>
+                <configuration>
+                    <argLine>${argLine}</argLine>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.7.7.201606060606</version>
                 <executions>
                     <execution>
-                        <id>start</id>
-                        <phase>pre-integration-test</phase>
                         <goals>
-                            <goal>start</goal>
+                            <goal>prepare-agent</goal>
                         </goals>
-                        <configuration>
-                            <!-- optional, default 27017 -->
-                            <port>27017</port>
-                            <!-- optional, default is false, if true allocates a random port and overrides embedmongo.port -->
-                            <randomPort>false</randomPort>
-                            <!-- optional, default 2.2.1. Latest version 3.3.0 -->
-                            <version>3.3.0</version>
-                            <!-- optional, default is a new dir in java.io.tmpdir -->
-                            <databaseDirectory>db/mongotest</databaseDirectory>
-                            <!-- optional (file|console|none), default console -->
-                            <logging>console</logging>
-                            <!-- optional, can be used when logging=file, default is ./embedmongo.log -->
-                            <logFile>${project.build.directory}/myfile.log</logFile>
-                            <!-- optional, can be used when logging=file, default is utf-8 -->
-                            <logFileEncoding>utf-8</logFileEncoding>
-                            <!-- optional, default is to listen on all interfaces -->
-                            <bindIp>127.0.0.1</bindIp>
-                            <!-- optional, default is http://fastdl.mongodb.org/ -->
-                            <downloadPath>http://fastdl.mongodb.org/</downloadPath>
-                            <!--optional, one of wiredTiger or mmapv1 (default is mmapv1) -->
-                            <storageEngine>wiredTiger</storageEngine>
-                            <!-- optional, skips this plugin entirely, use on the command line like -Dembedmongo.skip -->
-                            <!--<skip>true</skip> -->
-                        </configuration>
                     </execution>
                     <execution>
-                        <id>stop</id>
-                        <phase>post-integration-test</phase>
+                        <id>report</id>
+                        <phase>test</phase>
                         <goals>
-                            <goal>stop</goal>
+                            <goal>report</goal>
                         </goals>
                     </execution>
                 </executions>
             </plugin>
 
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.19.1</version>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>cobertura-maven-plugin</artifactId>
+                <version>2.7</version>
                 <configuration>
-                    <excludes>
-                        <exclude>mongo/**.class</exclude>
-                        <exclude>system_command/**.class</exclude>
-                    </excludes>
+                    <format>xml</format>
+                    <maxmem>256m</maxmem>
+                    <!-- aggregated reports for multi-module projects -->
+                    <aggregate>true</aggregate>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5.3</version>
+                <configuration>
+                    <useReleaseProfile>false</useReleaseProfile>
+                    <releaseProfiles>release</releaseProfiles>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.eluder.coveralls</groupId>
+                <artifactId>coveralls-maven-plugin</artifactId>
+                <version>4.2.0</version>
+            </plugin>
+            <plugin>
+                <groupId>com.versioneye</groupId>
+                <artifactId>versioneye-maven-plugin</artifactId>
+                <version>3.10.2</version>
             </plugin>
 
         </plugins>
