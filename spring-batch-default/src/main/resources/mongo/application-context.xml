@@ -39,35 +39,35 @@
     <bean id="xmlItemReader"
           class="org.springframework.batch.item.xml.StaxEventItemReader">
         <property name="fragmentRootElementName" value="record" />
-        <property name="resource" value="classpath:mongo/report.xml" />
-        <property name="unmarshaller" ref="reportUnmarshaller" />
+        <property name="resource" value="classpath:mongo/transaction.xml" />
+        <property name="unmarshaller" ref="transactionUnmarshaller" />
     </bean>
 
     <!-- Maps XML values to Object -->
-    <bean id="reportUnmarshaller"
+    <bean id="transactionUnmarshaller"
           class="org.springframework.oxm.xstream.XStreamMarshaller">
         <property name="aliases">
             <util:map id="aliases">
-                <entry key="record" value="org.batch.integration.mongo.Report" />
+                <entry key="record" value="org.spring.batch.infrastructure.model.Transaction" />
             </util:map>
         </property>
 
         <!-- attach a custom converter -->
         <property name="converters">
             <array>
-                <ref bean="reportConverter" />
+                <ref bean="transactionConverter" />
             </array>
         </property>
 
     </bean>
 
-    <bean id="reportConverter" class="org.batch.integration.mongo.ReportConverter" />
+    <bean id="transactionConverter" class="org.batch.integration.mongo.TransactionConverter" />
 
     <!-- Configuration of Mongo db writer -->
     <bean id="mongodbItemWriter"
           class="org.springframework.batch.item.data.MongoItemWriter">
         <property name="template" ref="mongoTemplate" />
-        <property name="collection" value="report" />
+        <property name="collection" value="transaction" />
     </bean>
 
 </beans>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<transaction>
+    <record id="1">
+        <name>Iurii</name>
+    </record>
+    <record id="2">
+        <name>Lampapos</name>
+    </record>
+    <racord id="3">
+        <name>Ashaevy</name>
+    </racord>
+</transaction>
