@@ -11,6 +11,8 @@ import org.springframework.util.ClassUtils;
 
 /**
  * Created by iurii.dziuban on 12.08.2016.
+ *
+ * Completion policy for chunk being completed
  */
 public class CustomCompletionPolicy extends DefaultResultCompletionPolicy {
 

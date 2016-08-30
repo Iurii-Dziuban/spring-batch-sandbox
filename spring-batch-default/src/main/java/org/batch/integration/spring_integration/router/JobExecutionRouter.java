@@ -11,6 +11,8 @@ import java.util.List;
 
 /**
  * Created by iurii.dziuban on 17.08.2016.
+ *
+ * Spring batch router implementation
  */
 public class JobExecutionRouter {
 

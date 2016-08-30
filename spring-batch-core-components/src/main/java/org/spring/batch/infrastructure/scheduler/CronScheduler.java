@@ -12,6 +12,8 @@ import java.util.Date;
 
 /**
  * Created by iurii.dziuban on 09.08.2016.
+ *
+ * Class for scheduling and running a job
  */
 public class CronScheduler {
 

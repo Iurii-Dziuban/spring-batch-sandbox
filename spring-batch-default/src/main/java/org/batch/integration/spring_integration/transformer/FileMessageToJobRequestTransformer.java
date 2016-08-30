@@ -12,6 +12,8 @@ import java.io.File;
 
 /**
  * Created by iurii.dziuban on 17.08.2016.
+ *
+ * File to job request transformer
  */
 public class FileMessageToJobRequestTransformer {
 

@@ -7,6 +7,8 @@ import org.springframework.batch.item.ItemProcessor;
 
 /**
  * Created by iurii.dziuban on 18.07.2016.
+ *
+ * Simple Logging processor
  */
 public class LoggingIdentityProcessor implements ItemProcessor<Transaction, Transaction> {
 

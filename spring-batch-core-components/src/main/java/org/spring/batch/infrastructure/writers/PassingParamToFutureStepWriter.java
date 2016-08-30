@@ -13,6 +13,8 @@ import java.util.List;
 
 /**
  * Created by iurii.dziuban on 11.08.2016.
+ *
+ * Writer with checking if parameter "Name" exists
  */
 public class PassingParamToFutureStepWriter<T> implements ItemStreamWriter<T> {
 

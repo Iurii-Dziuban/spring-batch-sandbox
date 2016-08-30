@@ -6,6 +6,8 @@ import org.springframework.retry.backoff.Sleeper;
 
 /**
  * Created by iurii.dziuban on 12.08.2016.
+ *
+ * waiter implementation
  */
 public class LoggingThreadWaitSleeper implements Sleeper {
 

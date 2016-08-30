@@ -9,6 +9,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by iurii.dziuban on 12.08.2016.
+ *
+ * Recoverer implementation
  */
 public class TransactionRecoverer implements MethodInvocationRecoverer<Transaction> {
 

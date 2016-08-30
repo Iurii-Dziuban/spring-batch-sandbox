@@ -8,7 +8,7 @@ import org.springframework.batch.core.listener.JobExecutionListenerSupport;
 /**
  * Created by iurii.dziuban on 13.07.2016.
  *
- * Job listener simple example
+ * Job listener simple example with before job and after job Logging
  */
 public class JobListener extends JobExecutionListenerSupport {
 

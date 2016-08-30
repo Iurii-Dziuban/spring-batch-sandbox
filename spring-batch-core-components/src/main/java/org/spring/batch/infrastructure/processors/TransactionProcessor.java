@@ -8,10 +8,12 @@ import org.springframework.batch.item.ItemProcessor;
 
 /**
  * Created by iurii.dziuban on 09.08.2016.
+ *
+ * Transaction processor mainly for partitioner example
  */
 public class TransactionProcessor implements ItemProcessor<Transaction, Transaction> {
 
-    private static final Log LOGGER = LogFactory.getLog(RangePartitioner.class);
+    private static final Log LOGGER = LogFactory.getLog(TransactionProcessor.class);
 
     private String threadName;
 
@@ -19,10 +21,6 @@ public class TransactionProcessor implements ItemProcessor<Transaction, Transact
     public Transaction process(Transaction item) throws Exception {
         LOGGER.info(threadName + " processing : " + item.getId() + " : " + item.getName());
         return item;
-    }
-
-    public String getThreadName() {
-        return threadName;
     }
 
     public void setThreadName(String threadName) {

@@ -9,6 +9,8 @@ import org.springframework.validation.BindException;
 
 /**
  * Created by iurii.dziuban on 17.08.2016.
+ *
+ * Mapper to configure and create Transaction from data
  */
 public class TransactionFieldSetMapper implements FieldSetMapper<Transaction>{
 

@@ -9,6 +9,8 @@ import java.util.List;
 
 /**
  * Created by iurii.dziuban on 13.07.2016.
+ *
+ * Stream writer with possibility to open and close connections
  */
 public class ListItemWriter<T> implements ItemStreamWriter<T> {
 

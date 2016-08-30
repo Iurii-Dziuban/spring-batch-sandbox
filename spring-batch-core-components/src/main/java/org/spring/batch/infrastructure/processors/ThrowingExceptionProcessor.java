@@ -7,10 +7,13 @@ import org.springframework.batch.item.ItemProcessor;
 
 /**
  * Created by iurii.dziuban on 19.07.2016.
+ *
+ * Processor that throws exception particular number of times
  */
 public class ThrowingExceptionProcessor implements ItemProcessor<Transaction, Transaction> {
 
     private static final Log LOGGER = LogFactory.getLog(ThrowingExceptionProcessor.class);
+
     private int numberOfTimesToThrowException = 1;
 
     @Override

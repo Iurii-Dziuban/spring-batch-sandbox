@@ -16,6 +16,8 @@ import java.util.List;
 
 /**
  * Created by iurii.dziuban on 17.08.2016.
+ *
+ * Stub of email sender with logging
  */
 public class StubJavaMailSender implements JavaMailSender {
 

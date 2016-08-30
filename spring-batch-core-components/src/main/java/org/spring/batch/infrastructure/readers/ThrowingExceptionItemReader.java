@@ -9,6 +9,8 @@ import org.springframework.batch.item.ItemStreamReader;
 
 /**
  * Created by iurii.dziuban on 19.07.2016.
+ *
+ * Throwing exception reader
  */
 public class ThrowingExceptionItemReader implements ItemStreamReader<Transaction> {
 

@@ -10,6 +10,8 @@ import org.springframework.messaging.support.MessageBuilder;
 
 /**
  * Created by iurii.dziuban on 17.08.2016.
+ *
+ * Transformer from job execution to Message
  */
 public class ExecutionsToMailTransformer {
 

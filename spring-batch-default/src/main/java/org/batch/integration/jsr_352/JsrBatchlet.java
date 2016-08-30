@@ -8,6 +8,8 @@ import javax.batch.runtime.BatchStatus;
 
 /**
  * Created by iurii.dziuban on 17.08.2016.
+ *
+ * JSR compliant implementation
  */
 //@Named
 public class JsrBatchlet extends AbstractBatchlet {

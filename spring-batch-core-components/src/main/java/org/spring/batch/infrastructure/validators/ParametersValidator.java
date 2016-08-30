@@ -8,6 +8,7 @@ import org.springframework.batch.core.JobParametersValidator;
 
 /**
  * Created by iurii.dziuban on 18.07.2016.
+ * Simple validator implementation with logging
  * Invoked twice https://jira.spring.io/browse/BATCH-2143
  */
 public class ParametersValidator implements JobParametersValidator {

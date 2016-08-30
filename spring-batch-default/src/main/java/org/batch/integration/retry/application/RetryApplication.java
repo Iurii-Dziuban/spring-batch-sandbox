@@ -6,6 +6,8 @@ import org.springframework.retry.annotation.EnableRetry;
 
 /**
  * Created by iurii.dziuban on 16.08.2016.
+ *
+ * Retry application programmatic example
  */
 @Configuration
 @EnableRetry

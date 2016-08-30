@@ -9,7 +9,7 @@ import org.springframework.batch.core.listener.StepExecutionListenerSupport;
 /**
  * Created by iurii.dziuban on 13.07.2016.
  *
- * Simple Step Listener for before/after step events
+ * Simple Step Listener for before/after step events logging
  */
 public class StepListener extends StepExecutionListenerSupport {
 

@@ -15,8 +15,9 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * Created by iurii.dziuban on 22.07.2016.
+ *
+ * Programmatic job configuration
  */
-
 @Configuration
 public class JobConfiguration {
 

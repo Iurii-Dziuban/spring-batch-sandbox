@@ -13,6 +13,8 @@ import java.util.Map;
 
 /**
  * Created by iurii.dziuban on 09.08.2016.
+ *
+ * Quartz job invocation. With Not Safety cast...
  */
 public class QuartzLauncherDetails extends QuartzJobBean {
     private static final String JOB_NAME = "jobName";

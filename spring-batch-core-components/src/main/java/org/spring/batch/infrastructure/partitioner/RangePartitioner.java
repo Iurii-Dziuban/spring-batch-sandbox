@@ -10,6 +10,8 @@ import java.util.Map;
 
 /**
  * Created by iurii.dziuban on 09.08.2016.
+ *
+ * Partinioner implementation based on range
  */
 public class RangePartitioner implements Partitioner {
 

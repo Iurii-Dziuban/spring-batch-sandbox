@@ -8,6 +8,7 @@ import org.springframework.retry.listener.RetryListenerSupport;
 
 /**
  * Created by iurii.dziuban on 22.07.2016.
+ * Retry event listener with logging events
  */
 public class RetryEventListener extends RetryListenerSupport {
 

@@ -8,6 +8,7 @@ import java.sql.SQLException;
 
 /**
  * Created by iurii.dziuban on 09.08.2016.
+ * RowMapper for db query
  */
 public class TransactionMapper implements RowMapper<Transaction> {
 

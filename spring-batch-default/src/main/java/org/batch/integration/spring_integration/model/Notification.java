@@ -2,6 +2,8 @@ package org.batch.integration.spring_integration.model;
 
 /**
  * Created by iurii.dziuban on 17.08.2016.
+ *
+ * Notification message data class to be send
  */
 public class Notification {
 

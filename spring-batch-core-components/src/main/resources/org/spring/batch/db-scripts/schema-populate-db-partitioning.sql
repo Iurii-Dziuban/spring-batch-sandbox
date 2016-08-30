@@ -1,10 +1,16 @@
 -- Data example specifically for partitioner example
-insert into transactions (ID, NAME) values (1, 'Mr. Foo');
-insert into transactions (ID, NAME) values (2, 'Ms. Bar');
-insert into transactions (ID, NAME) values (3, 'Mr & Ms FooBar');
-insert into transactions (ID, NAME) values (4, 'Mr. Foo 1');
-insert into transactions (ID, NAME) values (5, 'Ms. Bar 1');
-insert into transactions (ID, NAME) values (6, 'Mr & Ms FooBar 1');
-insert into transactions (ID, NAME) values (7, 'Mr. Foo 2');
-insert into transactions (ID, NAME) values (8, 'Ms. Bar 2');
-insert into transactions (ID, NAME) values (9, 'Mr & Ms FooBar 2');
+insert into transactions (ID, NAME) values (1, 'Iurii');
+insert into transactions (ID, NAME) values (2, 'VixenTael');
+insert into transactions (ID, NAME) values (3, 'Ashaevy');
+insert into transactions (ID, NAME) values (4, 'Lampapos');
+insert into transactions (ID, NAME) values (5, 'SukharevD');
+insert into transactions (ID, NAME) values (6, 'Iurii 1');
+insert into transactions (ID, NAME) values (7, 'VixenTael 1');
+insert into transactions (ID, NAME) values (8, 'Ashaevy 1');
+insert into transactions (ID, NAME) values (9, 'Lampapos 1');
+insert into transactions (ID, NAME) values (10, 'SukharevD 1');
+insert into transactions (ID, NAME) values (11, 'Iurii 2');
+insert into transactions (ID, NAME) values (12, 'VixenTael 2');
+insert into transactions (ID, NAME) values (13, 'Ashaevy 2');
+insert into transactions (ID, NAME) values (14, 'Lampapos 2');
+insert into transactions (ID, NAME) values (15, 'SukharevD 2');

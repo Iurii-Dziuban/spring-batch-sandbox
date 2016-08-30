@@ -16,6 +16,8 @@ import java.util.Locale;
 
 /**
  * Created by iurii.dziuban on 08.08.2016.
+ *
+ * Convertor from XML to Class
  */
 public class ReportConverter implements Converter {
 

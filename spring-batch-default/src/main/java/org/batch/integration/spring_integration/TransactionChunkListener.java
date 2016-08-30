@@ -15,6 +15,8 @@ import java.util.List;
 
 /**
  * Created by iurii.dziuban on 17.08.2016.
+ *
+ * Chunk listener to send error messages to spring integration endpoint
  */
 public class TransactionChunkListener extends ItemListenerSupport<Transaction, Transaction> {
 

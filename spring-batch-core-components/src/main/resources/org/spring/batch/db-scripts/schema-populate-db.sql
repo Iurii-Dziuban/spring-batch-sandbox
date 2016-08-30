@@ -1,4 +1,6 @@
 -- Standard data to populate db
-insert into transactions (ID, NAME) values (1, 'Mr. Foo');
-insert into transactions (ID, NAME) values (2, 'Ms. Bar');
-insert into transactions (ID, NAME) values (3, 'Mr & Ms FooBar');
+insert into transactions (ID, NAME) values (1, 'Iurii');
+insert into transactions (ID, NAME) values (2, 'VixenTael');
+insert into transactions (ID, NAME) values (3, 'Ashaevy');
+insert into transactions (ID, NAME) values (4, 'Lampapos');
+insert into transactions (ID, NAME) values (5, 'SukharevD');

@@ -9,6 +9,8 @@ import java.util.List;
 
 /**
  * Created by iurii.dziuban on 08.08.2016.
+ *
+ * Concurrent writer example without steam implementation that can not be concurrent by default
  */
 public class ConcurrentItemWriter implements ItemWriter<Transaction> {
 

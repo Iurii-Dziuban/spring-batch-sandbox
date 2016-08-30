@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Created by iurii.dziuban on 19.07.2016.
  *
- * Full step listener with all possible event handling
+ * Full step listener with all possible event handling and logging
  */
 public class StepFullListener extends StepListenerSupport<Transaction, Transaction> {
 

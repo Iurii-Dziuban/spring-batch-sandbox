@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 /**
  * Created by iurii.dziuban on 16.08.2016.
+ *
+ * Retriable example with programmatic configuration
  */
 @Service
 public class RetryableService {

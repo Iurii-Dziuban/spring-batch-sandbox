@@ -10,6 +10,8 @@ import org.springframework.integration.annotation.ServiceActivator;
 
 /**
  * Created by iurii.dziuban on 17.08.2016.
+ *
+ * Service activator class for job restart implementation
  */
 public class JobRestart {
 

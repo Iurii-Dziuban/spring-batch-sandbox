@@ -5,6 +5,8 @@ import java.util.Date;
 
 /**
  * Created by iurii.dziuban on 08.08.2016.
+ *
+ * Data class for mongo db
  */
 public class Report {
 
