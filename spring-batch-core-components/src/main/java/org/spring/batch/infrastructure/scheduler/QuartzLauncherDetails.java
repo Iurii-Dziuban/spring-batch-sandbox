@@ -5,16 +5,24 @@ import org.apache.commons.logging.LogFactory;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.batch.core.JobParameters;
+import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.configuration.JobRegistry;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 
+import java.util.Date;
 import java.util.Map;
 
 /**
  * Created by iurii.dziuban on 09.08.2016.
  *
  * Quartz job invocation. With Not Safety cast...
+ *
+ * Important to put unique param to job execution like date for each execution.
+ * Otherwise job will run once (Actually step will run once).
+ *
+ * Restartable is not important and important only in case
+ * the same job need to be restarted because it was stopped or error happened
  */
 public class QuartzLauncherDetails extends QuartzJobBean {
     private static final String JOB_NAME = "jobName";
@@ -32,7 +40,9 @@ public class QuartzLauncherDetails extends QuartzJobBean {
         JobRegistry jobRegistry = (JobRegistry) jobDataMap.get(JOB_REGISTRY);
 
         try {
-            jobLauncher.run(jobRegistry.getJob(jobName), new JobParameters());
+            String dateParam = new Date().toString();
+            JobParameters params = new JobParametersBuilder().addString("date", dateParam).toJobParameters();
+            jobLauncher.run(jobRegistry.getJob(jobName), params);
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
         }

@@ -16,7 +16,7 @@ public class LoggingIdentityProcessor implements ItemProcessor<Transaction, Tran
 
     @Override
     public Transaction process(Transaction transaction) throws Exception {
-        LOGGER.info("LoggingIdentityProcessor for transaction invoked");
+        LOGGER.info("LoggingIdentityProcessor for transaction invoked " + transaction);
         return transaction;
     }
 }

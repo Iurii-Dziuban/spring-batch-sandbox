@@ -20,10 +20,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * Created by iurii.dziuban on 19.07.2016.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:exceptional/skip-application-context.xml"})
-public class SpringBatchSkipTest {
+@ContextConfiguration(locations = {"classpath:exceptional/retry-on-write-application-context.xml"})
+public class SpringBatchRetryOnWriteTest {
 
-    private static final Log LOGGER = LogFactory.getLog(SpringBatchSkipTest.class);
+    private static final Log LOGGER = LogFactory.getLog(SpringBatchRetryOnWriteTest.class);
 
     @Autowired
     private ApplicationContext applicationContext;

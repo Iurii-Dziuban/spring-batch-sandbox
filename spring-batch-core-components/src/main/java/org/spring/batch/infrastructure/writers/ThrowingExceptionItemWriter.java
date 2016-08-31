@@ -11,8 +11,6 @@ import java.util.List;
 
 /**
  * Created by iurii.dziuban on 19.07.2016.
- *
- * TODO not used?
  */
 public class ThrowingExceptionItemWriter implements ItemStreamWriter<Transaction> {
 
@@ -23,6 +21,7 @@ public class ThrowingExceptionItemWriter implements ItemStreamWriter<Transaction
     public void write(List<? extends Transaction> items) throws Exception {
         if (throwException) {
             throwException = false;
+            LOGGER.error("Error on write", new IllegalArgumentException());
             throw new IllegalArgumentException();
         }
         LOGGER.info(items);

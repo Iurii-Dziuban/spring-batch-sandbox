@@ -24,6 +24,7 @@
     </appender>
 
     <logger name="org.springframework" additivity="false">
+        <!-- Change to different level for spring related libraries only -->
         <level value="info"/>
         <appender-ref ref="console"/>
     </logger>

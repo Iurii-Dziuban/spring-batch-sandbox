@@ -69,7 +69,7 @@
                         </bean>
                     </batch:processor> -->
                     <batch:skip-policy>
-                        <bean class="org.springframework.batch.core.step.skip.AlwaysSkipItemSkipPolicy" scope="step"/>
+                        <bean class="org.springframework.batch.core.step.skip.NeverSkipItemSkipPolicy" scope="step"/>
                     </batch:skip-policy>
                     <batch:retry-policy>
                         <bean class="org.springframework.retry.policy.NeverRetryPolicy" scope="step"/>
@@ -137,14 +137,14 @@
     <!-- Quartz scheduler to run job every 10 seconds -->
     <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
         <property name="triggers">
-            <bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+            <bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
                 <property name="jobDetail" ref="jobDetail" />
                 <property name="cronExpression" value="*/10 * * * * ?" />
             </bean>
         </property>
     </bean>
 
-    <bean id="jobDetail" class="org.springframework.scheduling.quartz.JobDetailBean">
+    <bean id="jobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
         <property name="jobClass" value="org.spring.batch.infrastructure.scheduler.QuartzLauncherDetails" />
         <property name="group" value="quartz-batch" />
         <property name="jobDataAsMap">
@@ -154,6 +154,7 @@
                 <entry key="jobLauncher" value-ref="jobLauncher" />
             </map>
         </property>
+        <property name="durability" value="true" />
     </bean>
 
 </beans>

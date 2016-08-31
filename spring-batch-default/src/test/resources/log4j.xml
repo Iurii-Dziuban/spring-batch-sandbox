@@ -23,16 +23,13 @@
     </appender>
 
     <logger name="org.springframework" additivity="false">
-        <level value="warn"/>
-        <appender-ref ref="console"/>
-    </logger>
-    <logger name="org.flywaydb.test" additivity="false">
+        <!-- Change to different level for spring related libraries only -->
         <level value="info"/>
         <appender-ref ref="console"/>
     </logger>
 
     <root>
-        <!-- Flyway tests log level: change log level here. Example debug\info-->
+        <!-- Change log level here. Example debug\info-->
         <priority value="info"/>
         <appender-ref ref="console"/>
     </root>
