@@ -10,7 +10,6 @@ import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -19,10 +18,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  */
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:jpa/application-context.xml"})
-public class SpringBatchJpaTest {
+@ContextConfiguration(locations = {"classpath:jpa/application-context-eclipselink.xml"})
+public class SpringBatchJpaEclipselinkTest {
 
-    private static final Log LOGGER = LogFactory.getLog(SpringBatchJpaTest.class);
+    private static final Log LOGGER = LogFactory.getLog(SpringBatchJpaEclipselinkTest.class);
 
     @Autowired
     private ApplicationContext applicationContext;

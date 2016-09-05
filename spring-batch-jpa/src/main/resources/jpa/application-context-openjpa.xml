@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:batch="http://www.springframework.org/schema/batch"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xsi:schemaLocation="http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/jdbc
+        http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
+
+    <bean id="dataSource"
+          class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+        <property name="driverClassName"><value>org.h2.Driver</value></property>
+        <property name="url"><value>jdbc:h2:./db/h2OpenJpaDb</value></property>
+        <property name="username"><value>sa</value></property>
+        <property name="password"><value></value></property>
+        <property name="maxIdle"><value>1</value></property>
+    </bean>
+
+    <!-- JPA entity manager configuration for hibernate usage -->
+    <bean id="entityManagerFactory"
+          class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="persistenceUnitName" value="h2-openjpa" />
+        <property name="persistenceXmlLocation" value="jpa/persistence-openjpa.xml" />
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.OpenJpaVendorAdapter">
+                <property name="showSql" value="true" />
+            </bean>
+        </property>
+        <property name="jpaDialect">
+            <bean class="org.springframework.orm.jpa.vendor.OpenJpaDialect" />
+        </property>
+    </bean>
+
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory" />
+    </bean>
+
+    <!-- JobRepository and JobLauncher are configuration/setup classes -->
+    <bean id="jobRepository" class="org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean"/>
+
+    <bean id="jobLauncher" class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
+        <property name="jobRepository" ref="jobRepository"/>
+    </bean>
+
+    <bean id="jobListener" class="org.spring.batch.infrastructure.listeners.JobListener">
+    </bean>
+
+    <batch:job id="transactionJob">
+        <batch:step id="transactionStep">
+            <batch:description>Step #1</batch:description>
+            <batch:tasklet>
+                <!-- processor-transactional="false" no retries or skips. Processor called once per item -->
+                <batch:chunk commit-interval="500">
+                    <!-- JPA reader example -->
+                    <batch:reader>
+                        <bean class="org.springframework.batch.item.database.JpaPagingItemReader">
+                            <property name="entityManagerFactory" ref="entityManagerFactory" />
+                            <property name="queryString" value="SELECT t FROM Transaction t" />
+                        </bean>
+                    </batch:reader>
+                    <batch:writer>
+                        <bean id="compositeItemWriter" class="org.springframework.batch.item.support.CompositeItemWriter">
+                            <property name="delegates">
+                                <list>
+                                    <!-- JPA item writer example -->
+                                    <bean id="writer" class="org.springframework.batch.item.database.JpaItemWriter">
+                                        <property name="entityManagerFactory" ref="entityManagerFactory" />
+                                    </bean>
+                                </list>
+                            </property>
+                        </bean>
+                    </batch:writer>
+
+                    <!-- Simple Identity with logging processor -->
+                    <batch:processor>
+                        <bean id="compositeItemProcessor"
+                              class="org.springframework.batch.item.support.CompositeItemProcessor">
+                            <property name="delegates">
+                                <list>
+                                    <bean class="org.spring.batch.infrastructure.processors.LoggingIdentityProcessor" scope="step"/>
+                                </list>
+                            </property>
+                        </bean>
+                    </batch:processor>
+
+                    <batch:skip-policy>
+                        <bean class="org.springframework.batch.core.step.skip.NeverSkipItemSkipPolicy" scope="step"/>
+                    </batch:skip-policy>
+                    <batch:retry-policy>
+                        <bean class="org.springframework.retry.policy.NeverRetryPolicy" scope="step"/>
+                    </batch:retry-policy>
+                </batch:chunk>
+            </batch:tasklet>
+            <batch:next on="FAILED" to="transactionStep"/>
+            <batch:end on="COMPLETED"/>
+            <batch:listeners>
+                <batch:listener>
+                    <bean class="org.spring.batch.infrastructure.listeners.StepFullListener">
+                    </bean>
+                </batch:listener>
+                <batch:listener>
+                    <bean class="org.spring.batch.infrastructure.listeners.JobListener">
+                    </bean>
+                </batch:listener>
+            </batch:listeners>
+        </batch:step>
+
+        <batch:listeners>
+            <batch:listener>
+                <bean class="org.spring.batch.infrastructure.listeners.JobListener">
+                </bean>
+            </batch:listener>
+        </batch:listeners>
+
+        <batch:validator>
+            <bean class="org.spring.batch.infrastructure.validators.ParametersValidator"/>
+        </batch:validator>
+    </batch:job>
+
+    <!-- create job-meta tables automatically -->
+    <jdbc:initialize-database data-source="dataSource" ignore-failures="DROPS">
+        <jdbc:script location="org/spring/batch/db-scripts/schema-drop-db.sql" />
+        <jdbc:script location="org/spring/batch/db-scripts/schema-create-db.sql" />
+        <jdbc:script location="org/spring/batch/db-scripts/schema-populate-db.sql" />
+    </jdbc:initialize-database>
+
+</beans>
