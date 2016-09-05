@@ -79,7 +79,9 @@ Main features examples are under src/main/java folder. It is simply classes with
 Main features examples are under src/main/java folder. It is simply classes with main methods, that explain the feature and ready to be executed and provide log that shows the results.
 - `hibernate` with Hibernate reader/writers capabilities and integration (hibernate dependency has dependency conflict. To enable example uncomment hibernate dependency)
 - `jpa` with JPA reader/writers capabilities and integration (hibernate dependency has dependency conflict. To enable example uncomment hibernate jpa dependency)
-
+ * example with Hibernate
+ * example with EclipseLink (BasicDatasource is not supported, different Datasource implementation is used, HQL and JPQL difference)
+ * example with OpenJPA (HQL, JPQL and difference of query for openjpa)
 #  Spring batch tests (`spring-batch-default`)
 Tests are under `src/test/java`
 - `mongo` test with embedded and external modes *NOTE* `mvn clean pre-integration-test -Dembedmongo.wait` to run mongodb locally
