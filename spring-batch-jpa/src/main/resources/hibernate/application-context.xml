@@ -32,6 +32,7 @@
                 <![CDATA[
 			hibernate.show_sql=true
 			hibernate.format_sql=true
+			hibernate.dialect=org.hibernate.dialect.H2Dialect
 			]]>
             </value>
         </property>
