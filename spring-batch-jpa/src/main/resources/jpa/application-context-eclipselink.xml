@@ -17,9 +17,9 @@
         <property name="maxIdle"><value>1</value></property>
     </bean> -->
 
-    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
         <property name="driverClass" value="org.h2.Driver"/>
-        <property name="jdbcUrl" value="jdbc:h2:./db/h2EclipseLink"/>
+        <property name="jdbcUrl" value="jdbc:h2:./db/h2EclipseLink;DB_CLOSE_ON_EXIT=FALSE"/>
         <property name="user" value="sa"/>
         <property name="password" value=""/>
     </bean>
@@ -69,23 +69,15 @@
                 <!-- processor-transactional="false" no retries or skips. Processor called once per item -->
                 <batch:chunk commit-interval="500">
                     <!-- JPA reader example -->
+                    <batch:streams>
+                        <batch:stream ref="jpaPagingItemReader" />
+                        <batch:stream ref="compositeItemWriter" />
+                    </batch:streams>
                     <batch:reader>
-                        <bean class="org.springframework.batch.item.database.JpaPagingItemReader">
-                            <property name="entityManagerFactory" ref="entityManagerFactory" />
-                            <property name="queryString" value="FROM Transaction t" />
-                        </bean>
+                        <ref bean="jpaPagingItemReader" />
                     </batch:reader>
                     <batch:writer>
-                        <bean id="compositeItemWriter" class="org.springframework.batch.item.support.CompositeItemWriter">
-                            <property name="delegates">
-                                <list>
-                                    <!-- JPA item writer example -->
-                                    <bean id="writer" class="org.springframework.batch.item.database.JpaItemWriter">
-                                        <property name="entityManagerFactory" ref="entityManagerFactory" />
-                                    </bean>
-                                </list>
-                            </property>
-                        </bean>
+                        <ref bean="compositeItemWriter" />
                     </batch:writer>
 
                     <!-- Simple Identity with logging processor -->
@@ -133,6 +125,22 @@
             <bean class="org.spring.batch.infrastructure.validators.ParametersValidator"/>
         </batch:validator>
     </batch:job>
+
+    <bean id="jpaPagingItemReader" class="org.springframework.batch.item.database.JpaPagingItemReader">
+        <property name="entityManagerFactory" ref="entityManagerFactory" />
+        <property name="queryString" value="FROM Transaction t" />
+    </bean>
+
+    <bean id="compositeItemWriter" class="org.springframework.batch.item.support.CompositeItemWriter">
+        <property name="delegates">
+            <list>
+                <!-- JPA item writer example -->
+                <bean id="writer" class="org.springframework.batch.item.database.JpaItemWriter">
+                    <property name="entityManagerFactory" ref="entityManagerFactory" />
+                </bean>
+            </list>
+        </property>
+    </bean>
 
     <!-- create job-meta tables automatically -->
     <jdbc:initialize-database data-source="dataSource" ignore-failures="DROPS">
