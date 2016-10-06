@@ -1,26 +1,8 @@
 language: java
 jdk:
   - oraclejdk8
-  - oraclejdk7
 script:
   - mvn clean install
 after_success:
-  - bash <(curl -s https://codecov.io/bash)
   - mvn versioneye:update
   - mvn clean cobertura:cobertura coveralls:report
-
-env:
-  global:
-     # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
-     #   via the "travis encrypt" command using the project repo's public key
-     - secure: "aHXd1JOAg/59eOF7o4lRa9b6lgGHufTysTMjnn53SqeXEMOG0V5ebVAkRqwy9+ySqxtzz7XyK4DxhTgiE3kkRmmHAog7RRPIxmhXLuujvlSJOhgK/aCCnxx7tQozMUfq3YHNHKMkgo5XOo3sqfU9JKrWFkJFVH9nG1Rnr0nRFVtrpl8yKQdgSop3rJh4aSAG6A9AvZMOTxs7mMp/EcOg9p4LIjSCv2AyJicHU+YOemMHOHRaisYBVTd9Iq4Z4VAtbPvkV5Af/rrBLqPyuLs/0OutxFkyMvYhJXaJ9IjLZ5CRvAYC3KtIM5b9hMCj15DOQQuNjbmLjMWXifH/JIOvYY6Dbmn09uILhiQkZ7Ucr1pKo841ygRJ/PLDlmwXM3h0P0MNoemI9VORFE6RAObkYqoB8ownEqYSQ33qxzTgwySZwUW+X3/rU3jx3569t1csd1uuD8afg8S3ZoyxbzzUistjNgv6mIeivin9iGFAw+tSK+SZzkAlVgNuezNIUXvWER/tYyNcbiKkjjJR6o6Ambc87ytwtQ4CttwuBkNqCN0PKbNlzNzEJJ8jL9Mjyf6xpz33lxghGjBDLbiSZyg+T9CuubIO8XmweWnjqfnKh0MKzhgmTW1wltiNhTi2/xB2/BsUvMeqOcx8PANWQ0ngc9IQadnZcULlj73+kQQqYUY="
-
-  addons:
-    coverity_scan:
-      project:
-        name: "Iurii-Dziuban/spring-batch-sandbox"
-        description: "Build submitted via Travis CI"
-      notification_email: ydzyuban@gmail.com
-      build_command_prepend: "mvn clean"
-      build_command:   "mvn compile -DskipTests"
-      branch_pattern: master

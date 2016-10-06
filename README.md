@@ -3,10 +3,6 @@
 
 [![Build Status](https://travis-ci.org/Iurii-Dziuban/spring-batch-sandbox.svg?branch=master)](https://travis-ci.org/Iurii-Dziuban/spring-batch-sandbox)
 [![Coverage Status](https://coveralls.io/repos/github/Iurii-Dziuban/spring-batch-sandbox/badge.svg?branch=master)](https://coveralls.io/github/Iurii-Dziuban/spring-batch-sandbox?branch=master)
-<a href="https://scan.coverity.com/projects/iurii-dziuban-spring-batch-sandbox">
-  <img alt="Coverity Scan Build Status"
-       src="https://scan.coverity.com/projects/9961/badge.svg"/>
-</a>
 [![Dependency Status](https://www.versioneye.com/user/projects/57b8aeb4090d4d0039befe67/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/57b8aeb4090d4d0039befe67)
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/Iurii-Dziuban/spring-batch-sandbox/issues)
 
