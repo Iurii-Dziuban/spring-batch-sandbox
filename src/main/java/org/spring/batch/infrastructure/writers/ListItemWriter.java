@@ -2,8 +2,9 @@ package org.spring.batch.infrastructure.writers;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.batch.item.*;
-import org.springframework.util.Assert;
+import org.springframework.batch.item.ExecutionContext;
+import org.springframework.batch.item.ItemStreamException;
+import org.springframework.batch.item.ItemStreamWriter;
 
 import java.util.List;
 

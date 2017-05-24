@@ -14,6 +14,7 @@ public class TransactionNewMethodArgumentsIdentifier implements NewMethodArgumen
     @Override
     public boolean isNew(Object[] args) {
         // Default return value have to be false
+        LOGGER.info("isNew = false");
         return false;
     }
 }

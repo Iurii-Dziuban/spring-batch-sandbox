@@ -2,6 +2,7 @@ package main.hibernate;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.batch.core.Job;
@@ -30,6 +31,7 @@ public class SpringBatchHibernatePagingTest {
     private ApplicationContext applicationContext;
 
     @Test
+    @Ignore
     public void test() throws Exception {
         JobLauncher jobLauncher = applicationContext.getBean(JobLauncher.class);
         Job transactionJob = applicationContext.getBean("transactionJob", Job.class);

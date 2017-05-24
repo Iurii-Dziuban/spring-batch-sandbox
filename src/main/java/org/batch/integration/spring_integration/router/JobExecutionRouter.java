@@ -2,10 +2,10 @@ package org.batch.integration.spring_integration.router;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.integration.annotation.Router;
 
-import javax.batch.runtime.BatchStatus;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,12 +26,12 @@ public class JobExecutionRouter {
 
         final List<String> routeToChannels = new ArrayList<String>();
 
-        if (jobExecution.getStatus().equals(BatchStatus.FAILED)) {
+        if (BatchStatus.FAILED.equals(jobExecution.getStatus())) {
             routeToChannels.add("jobRestarts");
         }
         else {
 
-            if (jobExecution.getStatus().equals(BatchStatus.COMPLETED)) {
+            if (BatchStatus.COMPLETED.equals(jobExecution.getStatus())) {
                 routeToChannels.add("completeApplication");
             }
 

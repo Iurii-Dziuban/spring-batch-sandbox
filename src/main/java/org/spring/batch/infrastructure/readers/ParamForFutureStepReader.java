@@ -3,7 +3,6 @@ package org.spring.batch.infrastructure.readers;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.spring.batch.infrastructure.model.Transaction;
-import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.annotation.BeforeStep;
 import org.springframework.batch.item.ExecutionContext;
