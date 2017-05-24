@@ -10,6 +10,10 @@ A project that shows spring batch capabilities and integration with other framew
 
 *Note:* Spring batch does not support latest version of spring, latest hibernate, so spring version, hibernate are out of date
 
+# Checks
+
+Jacoco code coverage, pmd, checkstyle, enforcer, findbugs
+
 # Project structure
 Each sub project follows the structure
 Maven project that consists of the following parts:
