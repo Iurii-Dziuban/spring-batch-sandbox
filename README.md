@@ -3,7 +3,7 @@
 
 [![Build Status](https://travis-ci.org/Iurii-Dziuban/spring-batch-sandbox.svg?branch=master)](https://travis-ci.org/Iurii-Dziuban/spring-batch-sandbox)
 [![Coverage Status](https://coveralls.io/repos/github/Iurii-Dziuban/spring-batch-sandbox/badge.svg?branch=master)](https://coveralls.io/github/Iurii-Dziuban/spring-batch-sandbox?branch=master)
-[![Dependency Status](https://www.versioneye.com/user/projects/57b8aeb4090d4d0039befe67/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/57b8aeb4090d4d0039befe67)
+[![Dependency Status](https://www.versioneye.com/user/projects/59255b7b85cd28003240f46a/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/59255b7b85cd28003240f46a)
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/Iurii-Dziuban/spring-batch-sandbox/issues)
 
 A project that shows spring batch capabilities and integration with other frameworks (http://projects.spring.io/spring-batch/)
