@@ -27,7 +27,7 @@ Maven project that consists of the following parts:
 # Pom.xml
 Libraries:
 - spring-batch-core
-- spring-batch-infrastructure
+- spring-batch-org.spring.batch.infrastructure
 - spring-retry
 - spring-jdbc for db population
 - commons-dbcp2 for database connection pool
@@ -48,7 +48,7 @@ Spring batch logging logic.
 
 # Spring batch main features demo
 ##`spring-batch-core-components`
-Main components are under `src/main/java/org/spring/batch/infrastructure` folder.
+Main components are under `src/main/java/org/spring/batch/org.spring.batch.infrastructure` folder.
 - `completion_policy` for chunk completion
 - `listeners` job and step listeners
 - `model` contains model to be used in examples
