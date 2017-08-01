@@ -10,6 +10,16 @@ A project that shows spring batch capabilities and integration with other framew
 
 *Note:* Spring batch does not support latest version of spring, latest hibernate, so spring version, hibernate are out of date
 
+Table of contents:
+ * [Static Analysis QA Checks](#checks)
+ * [Project parts](#project-structure)
+ * [Build project](#building-project)
+ * [Sub projects](#sub-projects)
+ * [Build configuration](#pomxml)
+ * [Logging configuration](#logging)
+ * [Features](#spring-batch-main-features-demo)
+ * [Tests](#tests)
+ 
 # Checks
 
 Jacoco code coverage, pmd, checkstyle, enforcer, findbugs
@@ -51,7 +61,7 @@ Spring batch logging logic.
 - Commons logging is configured to use Log4j under the hood.
 
 # Spring batch main features demo
-##`spring-batch-core-components`
+## `spring-batch-core-components`
 Main components are under `src/main/java/org/spring/batch/org.spring.batch.infrastructure` folder.
 - `completion_policy` for chunk completion
 - `listeners` job and step listeners
@@ -63,7 +73,7 @@ Main components are under `src/main/java/org/spring/batch/org.spring.batch.infra
 - `validator` job validators
 - `writers` job writers
 
-##`spring-batch-default`
+## `spring-batch-default`
 Main features examples are under src/main/java folder. It is simply classes with main methods, that explain the feature and ready to be executed and provide log that shows the results.
 - `concurrent` for concurrent features
 - `exceptional` for exceptional cases with skips, retries, failed states
@@ -82,11 +92,12 @@ Main features examples are under src/main/java folder. It is simply classes with
  * example with Hibernate
  * example with EclipseLink (BasicDatasource is not supported, different Datasource implementation is used, HQL and JPQL difference)
  * example with OpenJPA (HQL, JPQL and difference of query for openjpa)
-#  Spring batch tests (`spring-batch-default`)
+# Tests 
+** (`spring-batch-default`) **
 Tests are under `src/test/java`
 - `mongo` test with embedded and external modes *NOTE* `mvn clean pre-integration-test -Dembedmongo.wait` to run mongodb locally
 - `java_config` test with spring batch java config and invocation of job
 - `system_command` test with spring batch command tasklet to run command line command
 - `param_passing` test of passing parameters inside one step and between steps
 - `retry` test for spring-retry annotation based functionality
-- `spring_integration` test for integration of spring batch with spring integration framework. Poller, Transformer, Router, Email sending bz Spring integration and job processing via spring batch.
+- `spring_integration` test for integration of spring batch with spring integration framework. Poller, Transformer, Router, Email sending by Spring integration and job processing via spring batch.
