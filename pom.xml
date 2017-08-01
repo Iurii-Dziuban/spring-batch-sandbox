@@ -11,10 +11,11 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring.version>4.3.9.RELEASE</spring.version>
+        <spring.version>4.3.10.RELEASE</spring.version>
         <hibernate.version>5.2.10.Final</hibernate.version>
-        <spring.integration.version>4.3.10.RELEASE</spring.integration.version>
-        <spring.batch.version>3.0.7.RELEASE</spring.batch.version>
+        <spring.integration.version>4.3.11.RELEASE</spring.integration.version>
+        <spring.batch.version>3.0.8.RELEASE</spring.batch.version>
+        <spring.data.version>1.10.6.RELEASE</spring.data.version>
         <java.version>1.8</java.version>
 
         <jacoco.ratio.instruction>0.00</jacoco.ratio.instruction>
@@ -307,7 +308,7 @@
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-mongodb</artifactId>
-            <version>1.10.4.RELEASE</version>
+            <version>${spring.data.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.mongodb</groupId>
