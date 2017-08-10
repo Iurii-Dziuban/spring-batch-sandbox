@@ -3,7 +3,9 @@ package org.spring.batch.infrastructure.readers;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.spring.batch.infrastructure.model.Transaction;
-import org.springframework.batch.item.*;
+import org.springframework.batch.item.ExecutionContext;
+import org.springframework.batch.item.ItemStreamException;
+import org.springframework.batch.item.ItemStreamReader;
 
 /**
  * Created by iurii.dziuban on 18.07.2016.

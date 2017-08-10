@@ -2,7 +2,6 @@ package main.general;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.batch.core.ExitStatus;
@@ -14,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Created by dziubani on 4/11/2016.
@@ -34,6 +35,6 @@ public class SpringBatchSimpleJdbcTest {
 
         JobExecution jobExecution = jobLauncher.run(transactionJob, new JobParameters());
         LOGGER.info("Exit status = " + jobExecution.getExitStatus());
-        Assert.assertEquals(ExitStatus.COMPLETED, jobExecution.getExitStatus());
+        assertThat(jobExecution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);
     }
 }

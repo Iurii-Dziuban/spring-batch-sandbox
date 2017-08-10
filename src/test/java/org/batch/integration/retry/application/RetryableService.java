@@ -27,6 +27,7 @@ public class RetryableService {
             LOGGER.info("RetryableService finished SUCCESSFULLY");
         }
     }
+
     @Recover
     public void recover(IllegalStateException e) {
         LOGGER.info("RetryableService recovering after errors");

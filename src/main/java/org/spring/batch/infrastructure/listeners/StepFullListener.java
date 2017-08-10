@@ -72,17 +72,17 @@ public class StepFullListener extends StepListenerSupport<Transaction, Transacti
         LOGGER.info("OnProcessError event of StepFullListener");
     }
 
-    public void onSkipInProcess(Transaction item, Throwable t) {
+    /*public void onSkipInProcess(Transaction item, Throwable t) {
         LOGGER.info("OnSkipInProcess event of StepFullListener");
-    }
+    }*/
 
     public void onSkipInRead(Throwable t) {
         LOGGER.info("OnSkipInRead event of StepFullListener");
     }
 
-    public void onSkipInWrite(Transaction item, Throwable t) {
+    /*public void onSkipInWrite(Transaction item, Throwable t) {
         LOGGER.info("OnSkipInWrite event of StepFullListener");
-    }
+    }*/
 
     public void afterChunkError(ChunkContext context) {
         LOGGER.info("AfterChunkError event of StepFullListener");

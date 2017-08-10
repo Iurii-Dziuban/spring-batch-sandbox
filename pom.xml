@@ -18,8 +18,8 @@
         <spring.data.version>1.10.6.RELEASE</spring.data.version>
         <java.version>1.8</java.version>
 
-        <jacoco.ratio.instruction>0.00</jacoco.ratio.instruction>
-        <jacoco.ratio.bundle>0.00</jacoco.ratio.bundle>
+        <jacoco.ratio.instruction>1.00</jacoco.ratio.instruction>
+        <jacoco.ratio.bundle>1.00</jacoco.ratio.bundle>
     </properties>
 
     <scm>
@@ -468,11 +468,6 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.20</version>
                 <configuration>
-                    <excludes>
-                        <exclude>**/SpringBatchJpaOpenJpaTest</exclude>
-                        <exclude>mongo/**.class</exclude>
-                        <exclude>system_command/**.class</exclude>
-                    </excludes>
                 </configuration>
             </plugin>
 
@@ -485,6 +480,14 @@
                     <maxmem>256m</maxmem>
                     <!-- aggregated reports for multi-module projects -->
                     <aggregate>true</aggregate>
+                    <instrumentation>
+                        <!-- spring batch part, policy and scheduler -->
+                        <excludes>
+                            <exclude>org/springframework/batch/**</exclude>
+                            <exclude>org/spring/batch/infrastructure/completion_policy/**</exclude>
+                            <exclude>org/spring/batch/infrastructure/scheduler/**</exclude>
+                        </excludes>
+                    </instrumentation>
                 </configuration>
             </plugin>
 
@@ -629,7 +632,7 @@
                             <configLocation>checkstyles/basic-checkstyle-no-javadoc.xml</configLocation>
                             <logViolationsToConsole>true</logViolationsToConsole>
                             <includeTestSourceDirectory>true</includeTestSourceDirectory>
-                            <failOnViolation>false</failOnViolation>
+                            <failOnViolation>true</failOnViolation>
                         </configuration>
                     </execution>
                 </executions>
@@ -652,6 +655,9 @@
                         <goals>
                             <goal>cpd-check</goal>
                         </goals>
+                        <configuration>
+                            <excludeFromFailureFile>exclude-cpd.properties</excludeFromFailureFile>
+                        </configuration>
                     </execution>
                 </executions>
                 <configuration>
@@ -659,6 +665,7 @@
                     <minimumTokens>56</minimumTokens>
                     <linkXRef>false</linkXRef>
                     <verbose>true</verbose>
+                    <failOnViolation>true</failOnViolation>
                     <excludes>
                         <exclude>**/ListItemReader*</exclude>
                         <exclude>**/ListItemWriter*</exclude>
@@ -675,6 +682,11 @@
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.7.9</version>
                 <configuration>
+                    <excludes>
+                        <exclude>org/springframework/batch/**</exclude>
+                        <exclude>org/spring/batch/infrastructure/completion_policy/**</exclude>
+                        <exclude>org/spring/batch/infrastructure/scheduler/**</exclude>
+                    </excludes>
                     <rules>
                         <rule>
                             <element>BUNDLE</element>

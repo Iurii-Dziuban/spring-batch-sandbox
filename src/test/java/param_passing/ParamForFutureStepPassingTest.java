@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Created by iurii.dziuban on 11.08.2016.
@@ -24,6 +24,6 @@ public class ParamForFutureStepPassingTest {
     @Test
     public void launchJob() throws Exception {
         JobExecution jobExecution = jobLauncherTestUtils.launchJob();
-        assertEquals(BatchStatus.COMPLETED, jobExecution.getStatus());
+        assertThat(jobExecution.getStatus()).isEqualTo(BatchStatus.COMPLETED);
     }
 }

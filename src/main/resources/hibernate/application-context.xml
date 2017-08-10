@@ -19,7 +19,7 @@
         <property name="maxIdle"><value>1</value></property>
     </bean>
 
-    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
         <property name="dataSource" ref="dataSource" />
 
         <!-- Way of better configuration to use hibernate config file -->
@@ -38,7 +38,7 @@
         </property>
     </bean>
 
-    <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+    <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
         <property name="sessionFactory" ref="sessionFactory" />
     </bean>
 
@@ -59,7 +59,7 @@
                 <!-- processor-transactional="false" no retries or skips. Processor called once per item -->
                 <batch:chunk commit-interval="500">
                     <batch:reader>
-                        <bean class="org.springframework.batch.item.database.HibernateCursorItemReader">
+                        <bean class="org.springframework.batch.item.database.Hibernate5CursorItemReader">
                             <property name="sessionFactory" ref="sessionFactory" />
                             <property name="queryString" value="from Transaction" />
                             <property name="saveState" value="false" />

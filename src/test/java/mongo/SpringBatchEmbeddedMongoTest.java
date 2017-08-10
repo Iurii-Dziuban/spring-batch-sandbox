@@ -14,7 +14,6 @@ import de.flapdoodle.embed.mongo.distribution.Version;
 import de.flapdoodle.embed.process.runtime.Network;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.batch.core.BatchStatus;
@@ -26,7 +25,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.Date;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Created by iurii.dziuban on 09.08.2016.
@@ -70,25 +69,23 @@ public class SpringBatchEmbeddedMongoTest {
     }
 
     @Test
-    @Ignore
     public void launchJob() throws Exception {
         JobExecution jobExecution = jobLauncherTestUtils.launchJob();
-        assertEquals(BatchStatus.COMPLETED, jobExecution.getStatus());
+        assertThat(jobExecution.getStatus()).isEqualTo(BatchStatus.COMPLETED);
     }
 
     @Test
-    @Ignore
     public void launchStep() throws Exception {
         JobExecution jobExecution = jobLauncherTestUtils.launchStep("step1");
-        assertEquals(BatchStatus.COMPLETED, jobExecution.getStatus());
+        assertThat(jobExecution.getStatus()).isEqualTo(BatchStatus.COMPLETED);
     }
 
     @AfterClass
     public static void afterClass() {
-        if (mongod != null){
+        if (mongod != null) {
             mongod.stop();
         }
-        if (mongodExecutable != null){
+        if (mongodExecutable != null) {
             mongodExecutable.stop();
         }
     }

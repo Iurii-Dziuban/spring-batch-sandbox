@@ -9,7 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {
@@ -22,13 +23,13 @@ public class SpringBatchTest {
     @Test
     public void launchJob() throws Exception {
         JobExecution jobExecution = jobLauncherTestUtils.launchJob();
-        assertEquals(BatchStatus.COMPLETED, jobExecution.getStatus());
+        assertThat(jobExecution.getStatus()).isEqualTo(BatchStatus.COMPLETED);
     }
 
     @Test
     public void launchStep() throws Exception {
         JobExecution stepJobExecution = jobLauncherTestUtils.launchStep("transactionStep");
-        assertEquals(BatchStatus.COMPLETED, stepJobExecution.getStatus());
+        assertThat(stepJobExecution.getStatus()).isEqualTo(BatchStatus.COMPLETED);
     }
 
 }

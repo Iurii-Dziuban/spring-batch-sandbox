@@ -1,6 +1,5 @@
 package spring_integration;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.batch.core.ExitStatus;
@@ -14,7 +13,7 @@ import org.springframework.messaging.Message;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Created by iurii.dziuban on 17.08.2016.
@@ -34,13 +33,12 @@ public class SpringIntegrationTest {
     private JobRepository jobRepository;
 
     @Test
-    @Ignore
     @SuppressWarnings("unchecked")
     public void runBatch() throws Exception {
         //120 s should provide enough time for the poller to detect the file and process it
         JobExecution jobExecution = ((Message<JobExecution>) statusesChannel.receive(120000)).getPayload();
         ExitStatus exitStatus = jobExecution.getExitStatus();
-        assertEquals(ExitStatus.COMPLETED, exitStatus);
+        assertThat(exitStatus).isEqualTo(ExitStatus.COMPLETED);
         int count = jdbcTemplate.queryForObject("select count(*) from transactions", Integer.class);
         // nothing was written to db. Result is as it was initially.
     }
