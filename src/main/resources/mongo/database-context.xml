@@ -7,7 +7,7 @@
         http://www.springframework.org/schema/data/mongo/spring-mongo.xsd">
 
     <!-- connect to mongodb via spring mongo db support-->
-    <mongo:mongo host="127.0.0.1" port="27017" />
+    <mongo:mongo-client host="127.0.0.1" port="27017" />
     <mongo:db-factory dbname="mongoDB" />
 
     <!-- Mongo db template to run queries -->

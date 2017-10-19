@@ -70,7 +70,7 @@
                         <bean id="compositeItemWriter" class="org.springframework.batch.item.support.CompositeItemWriter">
                             <property name="delegates">
                                 <list>
-                                    <bean class="org.springframework.batch.item.database.HibernateItemWriter" scope="step">
+                                    <bean class="org.springframework.batch.item.database.Hibernate5ItemWriter" scope="step">
                                         <property name="sessionFactory" ref="sessionFactory" />
                                     </bean>
                                 </list>
