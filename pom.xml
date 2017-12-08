@@ -11,11 +11,11 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring.version>5.0.0.RELEASE</spring.version>
+        <spring.version>5.0.2.RELEASE</spring.version>
         <hibernate.version>5.2.12.Final</hibernate.version>
-        <spring.integration.version>4.3.12.RELEASE</spring.integration.version>
-        <spring.batch.version>3.0.8.RELEASE</spring.batch.version>
-        <spring.data.version>2.0.0.RELEASE</spring.data.version>
+        <spring.integration.version>5.0.0.RELEASE</spring.integration.version>
+        <spring.batch.version>4.0.0.RELEASE</spring.batch.version>
+        <spring.data.version>2.0.2.RELEASE</spring.data.version>
         <java.version>1.8</java.version>
 
         <jacoco.ratio.instruction>1.00</jacoco.ratio.instruction>
@@ -80,6 +80,10 @@
                 <exclusion>
                     <artifactId>spring-retry</artifactId>
                     <groupId>org.springframework.retry</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>spring-core</artifactId>
+                    <groupId>org.springframework</groupId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -228,12 +232,19 @@
             <groupId>org.springframework.integration</groupId>
             <artifactId>spring-integration-file</artifactId>
             <version>${spring.integration.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-io</groupId>
+                    <artifactId>commons-io</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.integration</groupId>
             <artifactId>spring-integration-test</artifactId>
             <version>${spring.integration.version}</version>
+            <scope>test</scope>
             <exclusions>
                 <exclusion>
                     <groupId>org.springframework</groupId>
@@ -301,7 +312,7 @@
         <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjweaver</artifactId>
-            <version>1.8.12</version>
+            <version>1.8.13</version>
         </dependency>
 
         <!-- Datasource connections pool used in all db related samples-->
@@ -341,7 +352,7 @@
         <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongo-java-driver</artifactId>
-            <version>3.5.0</version>
+            <version>3.6.0</version>
         </dependency>
 
         <!-- Spring data mongodb -->
@@ -429,6 +440,12 @@
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
             <version>${hibernate.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>net.bytebuddy</groupId>
+                    <artifactId>byte-buddy</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- Junit -->
@@ -484,6 +501,10 @@
                     <groupId>org.slf4j</groupId>
                     <artifactId>slf4j-api</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>commons-io</groupId>
+                    <artifactId>commons-io</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
 
@@ -510,6 +531,12 @@
                     <artifactId>slf4j-api</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>com.thoughtworks.xstream</groupId>
+            <artifactId>xstream</artifactId>
+            <version>1.4.10</version>
         </dependency>
 
     </dependencies>
@@ -673,12 +700,12 @@
                     <dependency>
                         <groupId>com.puppycrawl.tools</groupId>
                         <artifactId>checkstyle</artifactId>
-                        <version>8.3</version>
+                        <version>8.5</version>
                     </dependency>
                     <dependency>
                         <groupId>com.github.sevntu-checkstyle</groupId>
                         <artifactId>sevntu-checkstyle-maven-plugin</artifactId>
-                        <version>1.24.2</version>
+                        <version>1.25.0</version>
                     </dependency>
                 </dependencies>
                 <executions>
