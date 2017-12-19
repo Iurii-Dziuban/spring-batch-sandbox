@@ -8,40 +8,43 @@
 
 A project that shows spring batch capabilities and integration with other frameworks (http://projects.spring.io/spring-batch/)
 
-*Note:* Spring batch does not support latest version of spring, latest hibernate, so spring version, hibernate are out of date
+**Note:** Spring batch is configured to use latest version of spring, latest hibernate.
+However, excluding older versions of spring, hibernate is done in pom.xml
 
-Table of contents:
+# Table of contents:
  * [Static Analysis QA Checks](#checks)
- * [Project parts](#project-structure)
+ * [Project structure](#project-structure)
  * [Build project](#building-project)
- * [Sub projects](#sub-projects)
+ * [Project parts](#project-parts)
  * [Build configuration](#pomxml)
  * [Logging configuration](#logging)
  * [Features](#spring-batch-main-features-demo)
  * [Tests](#tests)
+ * [Ideas to try](#ideas)
  
 # Checks
 
-Jacoco code coverage, pmd, checkstyle, enforcer, findbugs
+`Jacoco`/`cobertura` code coverage, `pmd`, `checkstyle`, `enforcer`, `findbugs`
 
 # Project structure
-Each sub project follows the structure
 Maven project that consists of the following parts:
-- Java main classes are under (`src/main/java/main`) with different demo samples. Each example file ends on `Example` and has main method to be executed. Logging is provided on good level and configurable in log4j config
-- Test extentions for executing tests with spring batch (`src/test/java`) and run during the build
+- Java main classes are under (`src/main/java`) with infrastructural elements 
+- Each test file ends on `Test` and can be executed showing different features. 
+Logging is provided on good level and configurable in log4j config via slf4j
+Test extensions for executing tests with spring batch (`src/test/java`) and run during the build
 
 # Building project
 `mvn clean package`
 
-# Sub projects
-- `spring-batch-core-components` contains spring batch components that might be used in other modules. Also contains common sql scripts.
-- `spring-batch-default` contains general examples with different configurations and with integration with other frameworks/libraries
-- `spring-batch-jpa` contains jpa and hibernate examples that conflict with general examples because of spring version higher than spring batch uses
+# Project parts
+- Infrastructure. Contains spring batch components that might be used in other modules. Also contains common sql scripts.
+- General. Contains general examples with different configurations and with integration with other frameworks/libraries
+- JPA integrations. Contains jpa and hibernate examples that conflict with general examples because of spring version higher than spring batch uses
 
 # Pom.xml
 Libraries:
 - spring-batch-core
-- spring-batch-org.spring.batch.infrastructure
+- spring-integration
 - spring-retry
 - spring-jdbc for db population
 - commons-dbcp2 for database connection pool
@@ -57,12 +60,11 @@ Integration with:
 
 # Logging
 Spring batch logging logic.
-- Commons logging is used.
-- Commons logging is configured to use Log4j under the hood.
+- Slf4j is configured to use Log4j under the hood.
 
 # Spring batch main features demo
-## `spring-batch-core-components`
-Main components are under `src/main/java/org/spring/batch/org.spring.batch.infrastructure` folder.
+
+Main components are under `src/main/java/org.spring.batch.infrastructure` folder.
 - `completion_policy` for chunk completion
 - `listeners` job and step listeners
 - `model` contains model to be used in examples
@@ -73,8 +75,9 @@ Main components are under `src/main/java/org/spring/batch/org.spring.batch.infra
 - `validator` job validators
 - `writers` job writers
 
-## `spring-batch-default`
-Main features examples are under src/main/java folder. It is simply classes with main methods, that explain the feature and ready to be executed and provide log that shows the results.
+# Tests
+Main features examples are under `src/test/java` folder. Under `main` package
+It is simply test classes with test methods, that explain the feature and ready to be executed and provide log that shows the results.
 - `concurrent` for concurrent features
 - `exceptional` for exceptional cases with skips, retries, failed states
 - `general` for simple demos with task executor, java config, jdbc xml config
@@ -84,20 +87,19 @@ Main features examples are under src/main/java folder. It is simply classes with
 - `partitioner` with partitioner functionality feature
 - `retry` with two samples with stateless and stateful retry
 - `scheduler` with scheduling features based on cron and quartz
-
-## `spring-batch-jpa`
-Main features examples are under src/main/java folder. It is simply classes with main methods, that explain the feature and ready to be executed and provide log that shows the results.
 - `hibernate` with Hibernate reader/writers capabilities and integration (hibernate dependency has dependency conflict. To enable example uncomment hibernate dependency)
 - `jpa` with JPA reader/writers capabilities and integration (hibernate dependency has dependency conflict. To enable example uncomment hibernate jpa dependency)
- * example with Hibernate
- * example with EclipseLink (BasicDatasource is not supported, different Datasource implementation is used, HQL and JPQL difference)
- * example with OpenJPA (HQL, JPQL and difference of query for openjpa)
-# Tests 
-** (`spring-batch-default`) **
-Tests are under `src/test/java`
-- `mongo` test with embedded and external modes *NOTE* `mvn clean pre-integration-test -Dembedmongo.wait` to run mongodb locally
+  * example with Hibernate
+  * example with EclipseLink (BasicDatasource is not supported, different Datasource implementation is used, HQL and JPQL difference)
+  * example with OpenJPA (HQL, JPQL and difference of query for openjpa)
+
+Tests under `src/test/java`
+- `general` - simple test demo
+- `mongo` test with embedded and external modes **NOTE** `mvn clean pre-integration-test -Dembedmongo.wait` to run mongodb locally
 - `java_config` test with spring batch java config and invocation of job
 - `system_command` test with spring batch command tasklet to run command line command
 - `param_passing` test of passing parameters inside one step and between steps
 - `retry` test for spring-retry annotation based functionality
 - `spring_integration` test for integration of spring batch with spring integration framework. Poller, Transformer, Router, Email sending by Spring integration and job processing via spring batch.
+
+# Ideas
