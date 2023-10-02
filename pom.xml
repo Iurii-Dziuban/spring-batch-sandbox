@@ -12,7 +12,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring.version>5.0.7.RELEASE</spring.version>
-        <hibernate.version>5.3.1.Final</hibernate.version>
+        <hibernate.version>5.3.7.Final</hibernate.version>
         <spring.integration.version>5.0.6.RELEASE</spring.integration.version>
         <spring.batch.version>4.0.1.RELEASE</spring.batch.version>
         <spring.data.version>2.0.8.RELEASE</spring.data.version>
@@ -412,7 +412,7 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
-            <version>1.7.25</version>
+            <version>1.7.34</version>
         </dependency>
 
         <!-- NOTE! Spring Batch Hibernate readers writers are not compatible with Hibernate 5 only with Hibernate 4 -->
